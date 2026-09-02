@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #faf9f6; }
+  a { color: #17538f; text-decoration: none; }
+  a:hover { color: #0d3a66; text-decoration: underline; }
+  * { box-sizing: border-box; }
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #faf9f6; color: #1c2534; font-family: 'Source Sans 3', sans-serif;">
+
+  <header style="position: sticky; top: 0; z-index: 10; background: #14243c; color: #f2f0eb; display: flex; align-items: center; gap: 24px; padding: 0 32px; height: 58px;">
+    <a href="Compliance%20Report%20Theme.dc.html" style="display: flex; align-items: center; gap: 12px; color: inherit;" style-hover="text-decoration: none;">
+      <span style="width: 30px; height: 30px; border-radius: 6px; background: #2c72b8; display: flex; align-items: center; justify-content: center; font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 17px; color: #fff;">Q</span>
+      <span style="font-weight: 600; font-size: 15px;">QuantEcon <span style="font-weight: 400; opacity: 0.75;">/ Lecture Style Compliance</span></span>
+    </a>
+    <nav style="margin-left: auto; display: flex; align-items: center; gap: 24px; font-size: 13.5px; font-weight: 500;">
+      <a href="Compliance%20Report%20Theme.dc.html" style="color: #c8d4e4;">Report home</a>
+      <a href="Series%20Report.dc.html" style="color: #c8d4e4;">Series reports</a>
+      <a href="https://github.com/QuantEcon/compliance-lecture-style" style="color: #f2f0eb; border: 1px solid rgba(255,255,255,0.25); border-radius: 6px; padding: 5px 12px;">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main style="max-width: 980px; margin: 0 auto; padding: 40px clamp(20px, 4vw, 56px) 80px;">
+
+    <div style="font-size: 13px; color: #8a8577; margin-bottom: 22px; display: flex; gap: 8px;">
+      <a href="Compliance%20Report%20Theme.dc.html">Report home</a><span>/</span><span style="color: #414b5c;">Charts</span>
+    </div>
+
+    <h1 style="font-family: 'Source Serif 4', serif; font-size: 38px; font-weight: 700; margin: 0 0 12px; letter-spacing: -0.015em;">Charts</h1>
+    <p style="font-size: 15.5px; line-height: 1.6; color: #414b5c; max-width: 640px; margin: 0 0 40px; text-wrap: pretty;">Visual summary of the 2026-08 pass across 5 series and 7 rule categories. Everything here is generated from the CSVs in <a href="https://github.com/QuantEcon/compliance-lecture-style/tree/main/lectures/data" style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px;">lectures/data/</a> — nothing is typed in by hand, so the charts cannot drift from the scoreboard.</p>
+
+    <section style="margin-bottom: 52px;">
+      <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0 0 6px; border-bottom: 2px solid #14243c; padding-bottom: 10px;">Score heatmap — series × category</h2>
+      <p style="font-size: 13.5px; color: #8a8577; margin: 8px 0 18px;">Each cell is the mean score across the series' lectures. Grey means the category applies to too few lectures to average.</p>
+      <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 12px; padding: 20px; overflow-x: auto;">
+        <div style="display: grid; grid-template-columns: 130px repeat(7, 1fr); gap: 5px; min-width: 720px;">
+          <span></span>
+          <sc-for list="{{ catLabels }}" as="c" hint-placeholder-count="7">
+            <span style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a8577; text-align: center; padding-bottom: 4px;">{{ c }}</span>
+          </sc-for>
+          <sc-for list="{{ heatCells }}" as="cell" hint-placeholder-count="40">
+            <div style="grid-column: {{ cell.col }}; background: {{ cell.bg }}; color: {{ cell.fg }}; border-radius: 6px; min-height: 44px; display: flex; align-items: center; justify-content: {{ cell.justify }}; font-size: {{ cell.fontSize }}; font-weight: {{ cell.weight }}; font-variant-numeric: tabular-nums; padding: 0 10px;">{{ cell.text }}</div>
+          </sc-for>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 12px; color: #8a8577;">
+          <span>4</span>
+          <span style="flex: 0 0 180px; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #c0574a, #ddb35c, #6fa87d);"></span>
+          <span>10</span>
+          <span style="margin-left: 14px; width: 14px; height: 14px; border-radius: 3px; background: #e8e4da;"></span><span>N/A</span>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-bottom: 52px;">
+      <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0 0 6px; border-bottom: 2px solid #14243c; padding-bottom: 10px;">Most frequently violated rules</h2>
+      <p style="font-size: 13.5px; color: #8a8577; margin: 8px 0 18px;">Reach across the corpus, in lectures (of 348). Rules marked * are proposed — documented in the style guide but not yet coded.</p>
+      <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 6px;">
+        <sc-for list="{{ reach }}" as="r" hint-placeholder-count="18">
+          <div style="display: grid; grid-template-columns: 130px 1fr 44px; gap: 12px; align-items: center;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #414b5c; text-align: right;">{{ r.id }}</span>
+            <div style="height: 16px; border-radius: 3px; background: #f1ede4; overflow: hidden; position: relative;" title="{{ r.title }}">
+              <div style="height: 100%; border-radius: 3px; background: {{ r.color }}; width: {{ r.barWidth }};"></div>
+            </div>
+            <span style="font-variant-numeric: tabular-nums; font-size: 12.5px; font-weight: 600; color: #414b5c;">{{ r.n }}</span>
+          </div>
+        </sc-for>
+        <div style="display: flex; gap: 18px; margin-top: 12px; font-size: 12px; color: #8a8577;">
+          <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #2c72b8;"></span>registry rule</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #8ea8c4;"></span>proposed *</span>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-bottom: 52px;">
+      <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0 0 6px; border-bottom: 2px solid #14243c; padding-bottom: 10px;">Priority distribution by series</h2>
+      <p style="font-size: 13.5px; color: #8a8577; margin: 8px 0 18px;">Number of lectures in each priority bucket, worst series first.</p>
+      <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+        <sc-for list="{{ prios }}" as="p" hint-placeholder-count="5">
+          <div style="display: grid; grid-template-columns: 130px 1fr; gap: 12px; align-items: center;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #414b5c; text-align: right;">{{ p.name }}</span>
+            <div style="display: flex; height: 24px; border-radius: 4px; overflow: hidden; font-size: 11px; font-weight: 700;">
+              <sc-for list="{{ p.segs }}" as="s" hint-placeholder-count="4">
+                <div style="width: {{ s.w }}; background: {{ s.bg }}; color: {{ s.fg }}; display: flex; align-items: center; justify-content: center; overflow: hidden;">{{ s.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <div style="display: flex; gap: 18px; margin-top: 8px; font-size: 12px; color: #8a8577; flex-wrap: wrap;">
+          <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #a63a2e;"></span>HIGH</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #d98f4e;"></span>MEDIUM</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #e4cf7c;"></span>LOW</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #6fa87d;"></span>NONE</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0 0 6px; border-bottom: 2px solid #14243c; padding-bottom: 10px;">Corpus-weighted category averages</h2>
+      <p style="font-size: 13.5px; color: #8a8577; margin: 8px 0 18px;">Weighted by how many lectures each series contributes. Dashed lines mark the NONE threshold (8.6) and the HIGH floor (5.0).</p>
+      <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 12px; padding: 26px 20px 14px;">
+        <div style="position: relative; height: 220px; display: flex; align-items: flex-end; gap: 4%; padding: 0 2%;">
+          <div style="position: absolute; left: 0; right: 0; bottom: 86%; border-top: 2px dashed #6fa87d; z-index: 0;"><span style="position: absolute; right: 0; top: -18px; font-size: 11px; color: #3e7d4f; font-weight: 600;">NONE ≥ 8.6</span></div>
+          <div style="position: absolute; left: 0; right: 0; bottom: 50%; border-top: 2px dashed #c0574a; z-index: 0;"><span style="position: absolute; right: 0; top: -18px; font-size: 11px; color: #a63a2e; font-weight: 600;">HIGH ≤ 5.0</span></div>
+          <sc-for list="{{ avgs }}" as="a" hint-placeholder-count="7">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 1; height: 100%; justify-content: flex-end;">
+              <span style="font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; color: {{ a.color }};">{{ a.val }}</span>
+              <div style="width: 100%; max-width: 64px; height: {{ a.h }}; background: {{ a.color }}; border-radius: 6px 6px 0 0;"></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: flex; gap: 4%; padding: 8px 2% 0; border-top: 1px solid #e7e3d9;">
+          <sc-for list="{{ avgs }}" as="a" hint-placeholder-count="7">
+            <span style="flex: 1; text-align: center; font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a8577;">{{ a.name }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="border-top: 1px solid #e7e3d9; padding: 22px 56px; display: flex; gap: 16px; font-size: 12.5px; color: #8a8577;">
+    <span>© QuantEcon · CC BY-SA 4.0</span>
+    <span style="margin-left: auto;">348 lectures · corpus average 7.7 / 10</span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  heatColor(v) {
+    if (v == null) return null;
+    const t = Math.max(0, Math.min(1, (v - 4) / 6));
+    const h = 25 + t * 120, c = 0.09, l = 0.62 + t * 0.13;
+    return `oklch(${l.toFixed(3)} ${c} ${h.toFixed(0)})`;
+  }
+  renderVals() {
+    const CATS = ['Writing', 'Math', 'Code', 'Figures', 'Refs', 'Links', 'Admon'];
+    const rows = [
+      ['advanced', [4.6, 5.8, 7.3, 6.3, 9.2, 9.2, 10.0]],
+      ['python.myst', [4.5, 7.0, 7.6, 6.5, 9.5, 9.8, 10.0]],
+      ['dp', [4.7, 6.6, 7.7, 6.4, 9.3, 9.5, 10.0]],
+      ['programming', [4.1, 9.0, 8.4, 7.3, null, 9.8, 9.9]],
+      ['intro', [5.2, 8.6, 7.3, 6.5, 9.3, 9.7, 10.0]]
+    ];
+    const heatCells = [];
+    rows.forEach(([name, vals]) => {
+      heatCells.push({ col: 1, bg: 'transparent', fg: '#414b5c', text: name, justify: 'flex-end', fontSize: '12px', weight: 500 });
+      vals.forEach((v, j) => {
+        heatCells.push({
+          col: j + 2,
+          bg: v == null ? '#e8e4da' : this.heatColor(v),
+          fg: v == null ? '#8a8577' : '#1c2534',
+          text: v == null ? 'N/A' : v.toFixed(1),
+          justify: 'center', fontSize: '13px', weight: 600
+        });
+      });
+    });
+    const reachData = [
+      ['qe-fig-005',273,0],['qe-writing-008',237,0],['qe-fig-001',224,0],['qe-fig-008',196,0],
+      ['qe-writing-001',175,0],['qe-fig-003',165,0],['qe-writing-006',132,0],['qe-math-010',124,1],
+      ['qe-ref-001',106,0],['qe-writing-004',105,0],['qe-link-002',73,0],['qe-code-002',66,0],
+      ['qe-math-002',63,0],['qe-fig-006',60,0],['qe-fig-004',60,0],['qe-math-003',46,0],
+      ['qe-fig-002',38,0],['qe-math-011',34,1]
+    ];
+    const titles = {
+      'qe-fig-005': 'Descriptive figure names for cross-referencing', 'qe-writing-008': 'Remove excessive whitespace',
+      'qe-fig-001': 'Do not set figure size unless necessary', 'qe-fig-008': 'Use lw=2 for line charts',
+      'qe-writing-001': 'One sentence per paragraph', 'qe-fig-003': 'No matplotlib embedded titles',
+      'qe-writing-006': 'Capitalize lecture titles properly', 'qe-math-010': 'Blackboard \\mathbb{E}/\\mathbb{P}/\\mathbb{V}',
+      'qe-ref-001': 'Correct citation style', 'qe-writing-004': 'Avoid unnecessary capitalization',
+      'qe-link-002': 'Doc links for cross-series references', 'qe-code-002': 'Unicode Greek letters in code',
+      'qe-math-002': 'Use \\top for transpose', 'qe-fig-006': 'Lowercase axis labels',
+      'qe-fig-004': 'Caption formatting conventions', 'qe-math-003': 'Square brackets for matrices',
+      'qe-fig-002': 'Prefer code-generated figures', 'qe-math-011': 'Plain-letter distribution names'
+    };
+    const prioColors = [['#a63a2e', '#fff'], ['#d98f4e', '#fff'], ['#e4cf7c', '#4a4020'], ['#6fa87d', '#fff']];
+    const prioData = [
+      ['advanced', [43, 0, 20, 5], 68], ['python.myst', [81, 1, 46, 17], 145], ['dp', [34, 0, 9, 9], 52],
+      ['programming', [20, 0, 5, 2], 27], ['intro', [19, 0, 28, 9], 56]
+    ];
+    const avgData = [['Writing',4.6],['Math',7.0],['Code',7.5],['Figures',6.5],['References',9.4],['Links',9.6],['Admon',10.0]];
+    return {
+      catLabels: CATS, heatCells,
+      reach: reachData.map(([id, n, proposed]) => ({
+        id: id + (proposed ? '*' : ''), n, title: titles[id] || '',
+        barWidth: Math.round(n / 348 * 100) + '%', color: proposed ? '#8ea8c4' : '#2c72b8'
+      })),
+      prios: prioData.map(([name, counts, total]) => ({
+        name,
+        segs: counts.map((c, i) => ({
+          w: (c / total * 100).toFixed(1) + '%', bg: prioColors[i][0], fg: prioColors[i][1],
+          label: c > total * 0.06 ? String(c) : ''
+        })).filter(s => s.w !== '0.0%')
+      })),
+      avgs: avgData.map(([name, v]) => ({
+        name, val: v.toFixed(1), h: (v * 10) + '%',
+        color: v <= 5 ? '#c0574a' : v < 8.6 ? '#d9a94e' : '#6fa87d'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
