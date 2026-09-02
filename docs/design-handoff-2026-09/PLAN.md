@@ -1,9 +1,9 @@
 # PLAN — QuantEcon report theme (compliance variant) and its plugin family
 
-Status: **decisions made 2026-09-02** (REVIEW.md §10); trackers not yet filed. The two new
-repos do not exist yet. Once they do, this plan becomes one long-lived tracker per repo
-with sub-issues per work block (the `qe:workplan-project` flow); the drafts are in the
-last section. Nothing in this repo's cutover tracker (#147) changes.
+Status: **decisions made and trackers filed, 2026-09-02** (REVIEW.md §10). Both new repos
+exist with their initial PR (#1) open; the three `Project`-typed trackers and their native
+sub-issues are listed in the last section, with the drafts under `workplan/`. Nothing in
+the lecture repo's cutover tracker (#147) changes.
 
 Companion documents: [REVIEW.md](./REVIEW.md) (findings, evidence, decision record),
 [README.md](./README.md) (the design brief), the four `*.dc.html` references.
