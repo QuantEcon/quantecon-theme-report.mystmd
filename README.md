@@ -15,8 +15,14 @@ repositories and from the Sphinx / `myst-parser` world.
 
 ## Status
 
-**Planning complete (2026-09-02); build not started.** Work hangs off this repository's
-`Project`-typed tracker issue (see Issues). The design brief, the review that shaped the
+**Planning complete (2026-09-02); build not started.** Work hangs off the `Project`-typed
+tracker [#2](https://github.com/QuantEcon/quantecon-theme-report.mystmd/issues/2); its
+sub-issues are the phases. Dark and auto colour schemes are a future request,
+[#11](https://github.com/QuantEcon/quantecon-theme-report.mystmd/issues/11). The generic
+directives are tracked in
+[quantecon-plugins.mystmd#2](https://github.com/QuantEcon/quantecon-plugins.mystmd/issues/2)
+and the ledger's migration in
+[compliance-lecture-style#28](https://github.com/QuantEcon/compliance-lecture-style/issues/28). The design brief, the review that shaped the
 decisions, and the phased plan are in
 [`docs/design-handoff-2026-09/`](./docs/design-handoff-2026-09/):
 

@@ -214,13 +214,15 @@ lecture repo has no work item in this plan beyond `FAMILY.md` and #156.
 | 3 — renderers | ~2 weeks | Phases 1a, 1b, 2 |
 | 4 — releases + migration | ~1 week | Phase 3; compliance-repo owner |
 
-## Trackers to file (drafts, pending approval)
+## Trackers (filed 2026-09-02)
 
 | Repo | Issue | Genre |
 | --- | --- | --- |
-| `quantecon-theme-report.mystmd` | "Report theme — compliance variant — tracking" with sub-issues: Phase 0 scaffold, 1b wrappers, 2 shell, 3 renderers (one per primitive group), 4 release | long-lived tracker |
-| `quantecon-theme-report.mystmd` | "Dark and auto colour schemes" | future feature request (D5) |
-| `quantecon-plugins.mystmd` | "datavis plugin family v1 — tracking" with sub-issues: contract + schema, CSV reader, the eight directives, bundle + release, docs | long-lived tracker |
-| `quantecon-plugins.mystmd` | "Extract or upstream the data family if community interest appears" | future |
-| `compliance-lecture-style` | "Migrate the ledger to mystmd with the report theme" (D6) | project, opened at the Phase 1b exit |
-| `quantecon-theme.mystmd` | #156 filed (D8); `FAMILY.md` as a small PR | done / small |
+| `quantecon-theme-report.mystmd` | [#2](https://github.com/QuantEcon/quantecon-theme-report.mystmd/issues/2) "Report theme — compliance variant — tracking", sub-issues #3–#10 (Phase 0 scaffold, Phase 0 data contract, 1b compliance plugin, 2 shell, 3 renderers, 3 card upgrades, 3 test harness, 4 first release) | long-lived tracker, `Project` type |
+| `quantecon-theme-report.mystmd` | [#11](https://github.com/QuantEcon/quantecon-theme-report.mystmd/issues/11) "Dark and auto colour schemes for the report theme" | future feature request (D5) |
+| `quantecon-plugins.mystmd` | [#2](https://github.com/QuantEcon/quantecon-plugins.mystmd/issues/2) "datavis plugin family v1 — tracking", sub-issues #3–#7 (contract + schema, toolchain, tiles and bars, tables and lists, docs + v0.1.0) | long-lived tracker, `Project` type |
+| `quantecon-plugins.mystmd` | [#8](https://github.com/QuantEcon/quantecon-plugins.mystmd/issues/8) "Extract or upstream the data family if community interest appears" | future (`discuss`) |
+| `compliance-lecture-style` | [#28](https://github.com/QuantEcon/compliance-lecture-style/issues/28) "Migrate the ledger to mystmd with the report theme — tracking", sub-issues #29–#34 (data contract + findings.csv, MyST TOC, directive emission, gate + runbook, native charts, deploy) | migration project (D6), `Project` type; build items gated on the report theme's Phase 1b exit |
+| `quantecon-theme.mystmd` | [#156](https://github.com/QuantEcon/quantecon-theme.mystmd/issues/156) move `git-metadata` to the plugins repo (D8); `FAMILY.md` as a small PR (Phase 0) | done / small |
+
+The two new repositories were created on 2026-09-02 with the QEP-2 label set and delete-branch-on-merge; each has an initial PR (#1) adding its README, and the report repo's PR also commits this design bundle under `docs/design-handoff-2026-09/`. The trackers are not on the projects dashboard until registered in `QuantEcon/status-projects` `projects.yml`; draft rows are in `workplan/projects-registry-rows.yml`.
