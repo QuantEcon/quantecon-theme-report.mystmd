@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #faf9f6; }
+  a { color: #17538f; text-decoration: none; }
+  a:hover { color: #0d3a66; text-decoration: underline; }
+  * { box-sizing: border-box; }
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #faf9f6; color: #1c2534; font-family: 'Source Sans 3', sans-serif;">
+
+  <header style="position: sticky; top: 0; z-index: 10; background: #14243c; color: #f2f0eb; display: flex; align-items: center; gap: 24px; padding: 0 32px; height: 58px;">
+    <a href="Compliance%20Report%20Theme.dc.html" style="display: flex; align-items: center; gap: 12px; color: inherit;" style-hover="text-decoration: none;">
+      <span style="width: 30px; height: 30px; border-radius: 6px; background: #2c72b8; display: flex; align-items: center; justify-content: center; font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 17px; color: #fff;">Q</span>
+      <span style="font-weight: 600; font-size: 15px;">QuantEcon <span style="font-weight: 400; opacity: 0.75;">/ Lecture Style Compliance</span></span>
+    </a>
+    <nav style="margin-left: auto; display: flex; align-items: center; gap: 24px; font-size: 13.5px; font-weight: 500;">
+      <a href="Compliance%20Report%20Theme.dc.html" style="color: #c8d4e4;">Report home</a>
+      <a href="Charts.dc.html" style="color: #c8d4e4;">Charts</a>
+      <a href="https://github.com/QuantEcon/compliance-lecture-style" style="color: #f2f0eb; border: 1px solid rgba(255,255,255,0.25); border-radius: 6px; padding: 5px 12px;">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main style="max-width: 940px; margin: 0 auto; padding: 40px clamp(20px, 4vw, 56px) 80px;">
+
+    <div style="font-size: 13px; color: #8a8577; margin-bottom: 22px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+      <a href="Compliance%20Report%20Theme.dc.html">Report home</a><span>/</span>
+      <a href="Series%20Report.dc.html" style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px;">lecture-python-programming</a><span>/</span>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #414b5c;">python_by_example</span>
+    </div>
+
+    <div style="display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; margin-bottom: 8px;">
+      <div style="flex: 1; min-width: 300px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+          <h1 style="font-family: 'Source Serif 4', serif; font-size: 36px; font-weight: 700; margin: 0; letter-spacing: -0.015em;">python_by_example</h1>
+          <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.05em; padding: 4px 12px; border-radius: 6px; background: #f6e5e2; color: #8c2f24;">HIGH PRIORITY</span>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6a7180; border: 1px solid #ddd8cc; padding: 4px 10px; border-radius: 999px;">lectures/python_by_example.md</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6a7180; border: 1px solid #ddd8cc; padding: 4px 10px; border-radius: 999px;">audited 2026-08-26</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6a7180; border: 1px solid #ddd8cc; padding: 4px 10px; border-radius: 999px;">snapshot ceec881028</span>
+        </div>
+      </div>
+      <div style="text-align: center; background: #fff; border: 1px solid #e7e3d9; border-radius: 12px; padding: 14px 26px;">
+        <div style="font-family: 'Source Serif 4', serif; font-size: 40px; font-weight: 700; line-height: 1;">7.2<span style="font-size: 18px; color: #8a8577; font-weight: 400;"> / 10</span></div>
+        <div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8a8577; margin-top: 6px;">Overall</div>
+      </div>
+    </div>
+
+    <section style="margin: 28px 0 44px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+        <sc-for list="{{ breakdown }}" as="b" hint-placeholder-count="8">
+          <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 10px; padding: 13px 15px; display: flex; flex-direction: column; gap: 6px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+              <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #8a8577;">{{ b.name }}</span>
+              <span style="font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 700; color: {{ b.color }};">{{ b.score }}</span>
+            </div>
+            <div style="height: 4px; border-radius: 2px; background: #eeeade; overflow: hidden;"><div style="height: 100%; border-radius: 2px; background: {{ b.color }}; width: {{ b.barWidth }};"></div></div>
+            <div style="font-size: 12px; color: #6a7180; line-height: 1.45;">{{ b.note }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="margin-bottom: 44px;">
+      <div style="display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid #14243c; padding-bottom: 10px; margin-bottom: 14px; flex-wrap: wrap;">
+        <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0;">Issues</h2>
+        <div style="display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap;">
+          <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+            <button onClick="{{ f.onPick }}" style="all: unset; cursor: pointer; font-size: 12px; font-weight: 600; padding: 5px 13px; border-radius: 999px; border: 1px solid {{ f.border }}; background: {{ f.bg }}; color: {{ f.color }};">{{ f.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <sc-for list="{{ issues }}" as="i" hint-placeholder-count="6">
+          <div style="background: #fff; border: 1px solid #e7e3d9; border-left: 4px solid {{ i.sevColor }}; border-radius: 10px; padding: 14px 18px;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px;">
+              <span style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; padding: 3px 8px; border-radius: 4px; background: {{ i.sevBg }}; color: {{ i.sevColor }};">{{ i.severity }}</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: #17538f;">{{ i.rule }}</span>
+              <span style="font-weight: 700; font-size: 14.5px;">{{ i.title }}</span>
+              <span style="margin-left: auto; font-variant-numeric: tabular-nums; font-size: 12.5px; color: #8a8577;">×{{ i.count }}</span>
+            </div>
+            <div style="font-size: 13.5px; color: #414b5c; line-height: 1.55; margin-bottom: 8px;">{{ i.example }}</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #8a8577;">lines {{ i.lines }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="margin-bottom: 44px;">
+      <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0 0 14px; border-bottom: 2px solid #3e7d4f; padding-bottom: 10px; color: #2e5e3b;">Strengths</h2>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <sc-for list="{{ strengths }}" as="s" hint-placeholder-count="5">
+          <div style="display: flex; gap: 12px; background: #fbfdfb; border: 1px solid #dbe8dd; border-radius: 8px; padding: 11px 15px; font-size: 13.5px; color: #33513c; line-height: 1.55;">
+            <span style="font-weight: 700; color: #3e7d4f; flex-shrink: 0;">✓</span><span>{{ s }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section>
+      <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0 0 14px; border-bottom: 2px solid #14243c; padding-bottom: 10px;">Recommended actions</h2>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <sc-for list="{{ actions }}" as="a" hint-placeholder-count="7">
+          <div style="display: flex; gap: 14px; background: #fff; border: 1px solid #e7e3d9; border-radius: 8px; padding: 12px 15px; font-size: 13.5px; color: #414b5c; line-height: 1.55;">
+            <span style="width: 24px; height: 24px; border-radius: 50%; background: #14243c; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex-shrink: 0;">{{ a.n }}</span>
+            <span>{{ a.text }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </main>
+
+  <footer style="border-top: 1px solid #e7e3d9; padding: 22px 56px; display: flex; gap: 16px; font-size: 12.5px; color: #8a8577;">
+    <span>© QuantEcon · CC BY-SA 4.0</span>
+    <span style="margin-left: auto;"><a href="https://github.com/QuantEcon/lecture-python-programming/blob/main/lectures/python_by_example.md">View source lecture ↗</a></span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { filter: 'All' };
+  renderVals() {
+    const sev = {
+      Critical: ['#8c2f24', '#f6e5e2'], High: ['#a63a2e', '#f8ebe8'],
+      Medium: ['#8a5a1a', '#f6ecd8'], Low: ['#6b5d34', '#f2edd7']
+    };
+    const all = [
+      ['Critical','qe-admon-003','Use tick count management for nested directives',2,'499, 549','{exercise-start} fence (3 ticks) is never closed — the directive swallows the rest of the block, including the nested {hint} and the {exercise-end} that follow it.'],
+      ['High','qe-code-001','Follow PEP8 unless closer to mathematical notation',5,'391, 420, 641, 660, 721','Inline-comment and unary-operator spacing in a lecture that itself teaches PEP8: one space before the hash and none after it (391); a space after the unary minus in abs_x = - x[t] (641, 660).'],
+      ['High','qe-fig-005','Descriptive figure names for cross-referencing',11,'46, 61, 179, 209, 374, 417, 481, 524, 576, 632, …','{figure} without :name: — the figure cannot be cross-referenced with numref.'],
+      ['High','qe-fig-008','Use lw=2 for line charts',10,'67, 182, 217, 382, 426, 491, 534, 586, 646, 663','plot() without lw= — inconsistent line weight against the site convention.'],
+      ['High','qe-writing-006','Capitalize lecture titles properly',10,'39, 99, 147, 174, 195, 204, 294, 338, 364, 399','H2 in Title Case: \u2018The Task: Plotting a White Noise Process\u2019 (Task, White, Noise, Process should be lowercase).'],
+      ['Medium','qe-writing-001','Use one sentence per paragraph',1,'445','Two sentences in one paragraph.'],
+      ['Medium','qe-writing-002','Keep writing clear, concise, and valuable',2,'349, 513','\u2018Once you get used to it, this is a good thing: It\u2019 (349) ends on a dangling pronoun the following bullets have to finish; the exercise-2 hint at 513 is ungrammatical — in the one place a stuck reader goes for help.'],
+      ['Medium','qe-writing-005','Use bold for definitions, italic for emphasis',3,'224, 225, 239','Definitions are bolded correctly almost everywhere, but the two terms introduced at 221–227 are italicised instead, and the fuller definition of a list at 239 carries no emphasis at all.'],
+      ['Medium','qe-writing-008','Remove excessive whitespace between words',3,'124, 397, 445','Two spaces between words.'],
+      ['Low','qe-math-012','Multiplication via \\cdot or juxtaposition, never *',1,'693','* used as multiplication in the circle-area hint. (proposed rule)'],
+      ['Low','qe-writing-003','Maintain logical flow',1,'56','\u2018## Version 1\u2019 is the only numbered section and there is no Version 2 — the second attempt arrives 140 lines later as \u2018## Alternative Implementations\u2019.']
+    ].map(([severity, rule, title, count, lines, example]) => ({
+      severity: severity.toUpperCase(), sevKey: severity, rule, title, count, lines, example,
+      sevColor: sev[severity][0], sevBg: sev[severity][1]
+    }));
+    const { filter } = this.state;
+    const filters = ['All', 'Critical', 'High', 'Medium', 'Low'].map(label => {
+      const active = filter === label;
+      const n = label === 'All' ? all.length : all.filter(i => i.sevKey === label).length;
+      return {
+        label: label + ' · ' + n,
+        onPick: () => this.setState({ filter: label }),
+        bg: active ? '#14243c' : '#fff', color: active ? '#fff' : '#414b5c',
+        border: active ? '#14243c' : '#ddd8cc'
+      };
+    });
+    const sc = v => v == null ? '#b0a996' : v <= 5 ? '#a63a2e' : v < 8.6 ? '#c07a1d' : '#3e7d4f';
+    const breakdown = [
+      ['Writing', 3, 'qe-writing-006 ×10; qe-writing-005 ×3; qe-writing-002 ×2, +3 more.'],
+      ['Math', 9, 'qe-math-012 (proposed) ×1.'],
+      ['Code', 7.5, 'qe-code-001 ×5.'],
+      ['Figures', 6.5, 'qe-fig-005 ×11; qe-fig-008 ×10.'],
+      ['References', null, 'No citations in this lecture.'],
+      ['Links', 10, 'No mechanical violations detected.'],
+      ['Admonitions', 7.5, 'qe-admon-003 ×2.'],
+      ['JAX', null, 'Out of scope — JAX rules target lecture-jax.']
+    ].map(([name, v, note]) => ({
+      name, note, score: v == null ? 'N/A' : (v % 1 ? v.toFixed(1) : v + ''),
+      color: sc(v), barWidth: v == null ? '0%' : (v * 10) + '%'
+    }));
+    return {
+      filters, breakdown,
+      issues: filter === 'All' ? all : all.filter(i => i.sevKey === filter),
+      strengths: [
+        'The white-noise program is written three times — vectorised (61–69), with a for loop (209–219) and with a while loop (374–384) — and the first two carry labels that later prose actually cites by {ref}, so \u2018let\u2019s do this another way\u2019 is always a link rather than a description.',
+        'Unicode Greek is used from the very first code cell (ϵ_values, 66) through to the last exercise (α_values, 525); qe-code-002 has nothing to report.',
+        'The indentation rule is introduced where it is first needed (307–315), then given its own section that ends on something concrete: \u2018The Python standard is 4 spaces, and that\u2019s what you should use\u2019.',
+        'Every exercise is a labelled exercise-start/exercise-end pair with a :class: dropdown solution, and two carry {hint} dropdowns so the help is opt-in.',
+        '\u2018IID\u2019 is written in the correct form at 197, 461 and 692 — no \u2018i.i.d.\u2019 anywhere.'
+      ],
+      actions: [
+        { n: 1, text: 'Close the two {exercise-start} fences at 499 and 549 (qe-admon-003, critical): each opens a 3-tick block that is never closed, so the exercise body swallows the {hint} and {exercise-end} that follow it.' },
+        { n: 2, text: 'Lower-case the 10 Title Case headings (qe-writing-006) — the largest routine fix here.' },
+        { n: 3, text: 'Add :name:/caption metadata to the 11 figures and set lw=2 on the 10 plots (qe-fig-005, qe-fig-008).' },
+        { n: 4, text: 'Rewrite the exercise-2 hint at 513 as a sentence, and finish the sentence at 349 before the bullet list starts.' },
+        { n: 5, text: 'Bold the two definitions at 224–225 and the definition sentence at 239, matching the lecture\u2019s own convention elsewhere.' },
+        { n: 6, text: 'Fix the PEP8 items (391, 420, 641, 660, 721) and replace * with \\cdot in the circle-area hint at 693.' },
+        { n: 7, text: 'Either rename \u2018## Version 1\u2019 or add the Version 2 it implies, and correct \u2018withdraws\u2019 to \u2018withdrawals\u2019 (405).' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

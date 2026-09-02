@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #faf9f6; }
+  a { color: #17538f; text-decoration: none; }
+  a:hover { color: #0d3a66; text-decoration: underline; }
+  * { box-sizing: border-box; }
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #faf9f6; color: #1c2534; font-family: 'Source Sans 3', sans-serif;">
+
+  <header style="position: sticky; top: 0; z-index: 10; background: #14243c; color: #f2f0eb; display: flex; align-items: center; gap: 24px; padding: 0 32px; height: 58px;">
+    <a href="Compliance%20Report%20Theme.dc.html" style="display: flex; align-items: center; gap: 12px; color: inherit;" style-hover="text-decoration: none;">
+      <span style="width: 30px; height: 30px; border-radius: 6px; background: #2c72b8; display: flex; align-items: center; justify-content: center; font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 17px; color: #fff;">Q</span>
+      <span style="font-weight: 600; font-size: 15px;">QuantEcon <span style="font-weight: 400; opacity: 0.75;">/ Lecture Style Compliance</span></span>
+    </a>
+    <nav style="margin-left: auto; display: flex; align-items: center; gap: 24px; font-size: 13.5px; font-weight: 500;">
+      <a href="Compliance%20Report%20Theme.dc.html" style="color: #c8d4e4;">Report home</a>
+      <a href="Charts.dc.html" style="color: #c8d4e4;">Charts</a>
+      <a href="https://github.com/QuantEcon/compliance-lecture-style" style="color: #f2f0eb; border: 1px solid rgba(255,255,255,0.25); border-radius: 6px; padding: 5px 12px;">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main style="max-width: 1020px; margin: 0 auto; padding: 40px clamp(20px, 4vw, 56px) 80px;">
+
+    <div style="font-size: 13px; color: #8a8577; margin-bottom: 22px; display: flex; gap: 8px; align-items: center;">
+      <a href="Compliance%20Report%20Theme.dc.html">Report home</a><span>/</span>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #414b5c;">lecture-python-programming</span>
+    </div>
+
+    <div style="display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; margin-bottom: 10px;">
+      <div style="flex: 1; min-width: 300px;">
+        <h1 style="font-family: 'Source Serif 4', serif; font-size: 38px; font-weight: 700; margin: 0 0 10px; letter-spacing: -0.015em;">lecture-python-programming</h1>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6a7180; border: 1px solid #ddd8cc; padding: 4px 10px; border-radius: 999px;">27 lectures</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6a7180; border: 1px solid #ddd8cc; padding: 4px 10px; border-radius: 999px;">audited 2026-08-21</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6a7180; border: 1px solid #ddd8cc; padding: 4px 10px; border-radius: 999px;">snapshot ceec881028</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6a7180; border: 1px solid #ddd8cc; padding: 4px 10px; border-radius: 999px;">judgment review: all lectures</span>
+        </div>
+      </div>
+      <div style="text-align: center; background: #fff; border: 1px solid #e7e3d9; border-radius: 12px; padding: 14px 26px;">
+        <div style="font-family: 'Source Serif 4', serif; font-size: 40px; font-weight: 700; line-height: 1;">8.0<span style="font-size: 18px; color: #8a8577; font-weight: 400;"> / 10</span></div>
+        <div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8a8577; margin-top: 6px;">Average overall</div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin: 26px 0 40px;">
+      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="7">
+        <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 10px; padding: 12px 14px;">
+          <div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #8a8577;">{{ c.name }}</div>
+          <div style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; color: {{ c.color }}; margin: 4px 0 6px;">{{ c.score }}</div>
+          <div style="height: 4px; border-radius: 2px; background: #eeeade; overflow: hidden;"><div style="height: 100%; border-radius: 2px; background: {{ c.color }}; width: {{ c.barWidth }};"></div></div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; gap: 16px; background: #fff; border: 1px solid #e7e3d9; border-left: 4px solid #a63a2e; border-radius: 10px; padding: 18px 22px; margin-bottom: 40px;">
+      <div style="font-size: 15px; line-height: 1.65; color: #2b3444; text-wrap: pretty;"><strong>Writing is the whole story here.</strong> At 4.1 it is the lowest cell in the entire series-by-category grid, and the only category at the floor anywhere in the series. All 20 HIGH lectures are HIGH because Writing fell to or below 4 — no Math floor, no Figures floor, no double-floored lecture. One rule carries most of the load: <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px;">qe-writing-006</span> — Title Case in H2+ headings — in 23 of 27 lectures, 178 headings. Everything else is the corpus's best: Math 9.0, Code 8.4 and Figures 7.3 are each the highest of the five series.</div>
+    </div>
+
+    <section style="margin-bottom: 44px;">
+      <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0 0 14px; border-bottom: 2px solid #14243c; padding-bottom: 10px;">Priority distribution</h2>
+      <div style="display: flex; height: 34px; border-radius: 8px; overflow: hidden; font-size: 12.5px; font-weight: 700; color: #fff;">
+        <div style="width: 74.1%; background: #a63a2e; display: flex; align-items: center; justify-content: center;">HIGH · 20</div>
+        <div style="width: 18.5%; background: #c8b25a; display: flex; align-items: center; justify-content: center; color: #4a4020;">LOW · 5</div>
+        <div style="width: 7.4%; background: #3e7d4f; display: flex; align-items: center; justify-content: center;">NONE · 2</div>
+      </div>
+      <p style="font-size: 13.5px; color: #6a7180; margin: 10px 0 0;">The highest HIGH share of any series — 74% against 57% across the corpus — alongside the second-highest mean overall score. No MEDIUM lectures.</p>
+    </section>
+
+    <section style="margin-bottom: 44px;">
+      <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0 0 6px; border-bottom: 2px solid #14243c; padding-bottom: 10px;">Top systemic issues</h2>
+      <p style="font-size: 13.5px; color: #8a8577; margin: 8px 0 16px;">Ranked by how many of the series' 27 lectures each rule reaches.</p>
+      <div style="display: flex; flex-direction: column; gap: 7px;">
+        <sc-for list="{{ systemic }}" as="r" hint-placeholder-count="10">
+          <div style="display: grid; grid-template-columns: 130px 1fr minmax(120px, 200px) 90px; gap: 14px; align-items: center; background: #fff; border: 1px solid #e7e3d9; border-radius: 8px; padding: 9px 14px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 600; color: #17538f; background: #eef2f7; padding: 3px 7px; border-radius: 4px; text-align: center;">{{ r.id }}</span>
+            <span style="font-size: 13.5px; color: #414b5c; min-width: 0;">{{ r.title }}</span>
+            <span style="height: 6px; border-radius: 3px; background: #eeeade; overflow: hidden; display: block;"><span style="display: block; height: 100%; border-radius: 3px; background: #2c72b8; width: {{ r.barWidth }};"></span></span>
+            <span style="font-variant-numeric: tabular-nums; font-size: 12.5px; color: #6a7180; text-align: right; white-space: nowrap;"><strong style="color: #1c2534;">{{ r.reach }}</strong>/27 · {{ r.occ }}×</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="margin-bottom: 44px;">
+      <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0 0 6px; border-bottom: 2px solid #14243c; padding-bottom: 10px;">Recommendations</h2>
+      <p style="font-size: 13.5px; color: #8a8577; margin: 8px 0 16px;">Ordered by HIGH lectures cleared per unit of work. Projections use the published scoring model.</p>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <sc-for list="{{ recs }}" as="r" hint-placeholder-count="5">
+          <div style="display: flex; gap: 16px; background: #fff; border: 1px solid #e7e3d9; border-radius: 10px; padding: 15px 18px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: #14243c; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13.5px; flex-shrink: 0;">{{ r.n }}</div>
+            <div style="min-width: 0;">
+              <div style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">{{ r.title }}</div>
+              <div style="font-size: 13.5px; color: #6a7180; line-height: 1.55;">{{ r.desc }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="margin-bottom: 44px;">
+      <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0 0 6px; border-bottom: 2px solid #14243c; padding-bottom: 10px;">Lectures ranked</h2>
+      <p style="font-size: 13.5px; color: #8a8577; margin: 8px 0 14px;">Click a column to sort. A dash means the category is not applicable. Click a lecture for its full report.</p>
+      <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 10px; overflow-x: auto;">
+        <div style="display: grid; grid-template-columns: 34px minmax(160px, 1.3fr) repeat(6, minmax(58px, 0.55fr)) 74px 76px; gap: 0 8px; align-items: center; padding: 10px 14px; border-bottom: 2px solid #e7e3d9; font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #8a8577; min-width: 780px;">
+          <span>#</span><span>Lecture</span>
+          <sc-for list="{{ columns }}" as="col" hint-placeholder-count="8">
+            <button onClick="{{ col.onSort }}" style="all: unset; cursor: pointer; font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: {{ col.color }}; text-align: right;" style-hover="color: #17538f;">{{ col.label }}{{ col.arrow }}</button>
+          </sc-for>
+          <span style="text-align: right;">Priority</span>
+        </div>
+        <sc-for list="{{ lectures }}" as="l" hint-placeholder-count="10">
+          <div style="display: grid; grid-template-columns: 34px minmax(160px, 1.3fr) repeat(6, minmax(58px, 0.55fr)) 74px 76px; gap: 0 8px; align-items: center; padding: 8px 14px; border-bottom: 1px solid #f1ede4; font-size: 13px; font-variant-numeric: tabular-nums; min-width: 780px;" style-hover="background: #f7f5ef;">
+            <span style="color: #b0a996; font-size: 12px;">{{ l.rank }}</span>
+            <a href="Lecture%20Report.dc.html" style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px;">{{ l.name }}</a>
+            <span style="text-align: right; color: {{ l.wColor }}; font-weight: {{ l.wWeight }};">{{ l.writing }}</span>
+            <span style="text-align: right; color: #414b5c;">{{ l.math }}</span>
+            <span style="text-align: right; color: #414b5c;">{{ l.code }}</span>
+            <span style="text-align: right; color: #414b5c;">{{ l.figures }}</span>
+            <span style="text-align: right; color: #414b5c;">{{ l.links }}</span>
+            <span style="text-align: right; color: #414b5c;">{{ l.admon }}</span>
+            <span style="text-align: right; font-weight: 700;">{{ l.overall }}</span>
+            <span style="text-align: right;"><span style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; padding: 2px 7px; border-radius: 4px; background: {{ l.prioBg }}; color: {{ l.prioColor }};">{{ l.priority }}</span></span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section>
+      <h2 style="font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 700; margin: 0 0 14px; border-bottom: 2px solid #14243c; padding-bottom: 10px;">Clean across the series</h2>
+      <p style="font-size: 13.5px; color: #8a8577; margin: 0 0 14px;">Checked rules with no violation anywhere in the series — the conventions this series already holds to.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <sc-for list="{{ clean }}" as="c" hint-placeholder-count="16">
+          <span style="display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; background: #eef4ef; border: 1px solid #d3e2d6; color: #2e5e3b; border-radius: 999px; padding: 5px 12px;"><span style="font-weight: 700;">✓</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;">{{ c.id }}</span><span>{{ c.title }}</span></span>
+        </sc-for>
+      </div>
+    </section>
+  </main>
+
+  <footer style="border-top: 1px solid #e7e3d9; padding: 22px 56px; display: flex; gap: 16px; font-size: 12.5px; color: #8a8577;">
+    <span>© QuantEcon · CC BY-SA 4.0</span>
+    <span style="margin-left: auto;">Every lecture edit is a PR in <a href="https://github.com/QuantEcon/lecture-python-programming">lecture-python-programming</a> — this ledger measures the corpus, it does not patch it.</span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { sortKey: 'overall', asc: true };
+  scoreColor(v) {
+    if (v == null) return '#b0a996';
+    if (v <= 5) return '#a63a2e';
+    if (v < 8.6) return '#c07a1d';
+    return '#3e7d4f';
+  }
+  renderVals() {
+    const { sortKey, asc } = this.state;
+    const raw = [
+      ['about_py',3,null,10,7.5,8,null,7.1,'HIGH'],['python_by_example',3,9,7.5,6.5,10,7.5,7.2,'HIGH'],
+      ['pandas',3,null,7,6.5,10,10,7.3,'HIGH'],['pandas_panel',3.5,null,8.5,4.5,10,10,7.3,'HIGH'],
+      ['jax_intro',3,null,7.5,7,10,10,7.5,'HIGH'],['numpy',3,8,7,7,10,10,7.5,'HIGH'],
+      ['matplotlib',4,10,7,4.5,10,10,7.6,'HIGH'],['numba',3,7.5,8.5,7.5,9,10,7.6,'HIGH'],
+      ['names',3,null,8.5,7,10,10,7.7,'HIGH'],['workspace',4.5,null,8.5,5.5,10,10,7.7,'LOW'],
+      ['scipy',3,7.5,8.5,8,10,10,7.8,'HIGH'],['writing_good_code',3,9.5,7,7.5,10,10,7.8,'HIGH'],
+      ['getting_started',3,null,10,7,10,10,8.0,'HIGH'],['autodiff',7,7.5,7.5,6.5,10,10,8.1,'LOW'],
+      ['polars',4.5,null,9,7,10,10,8.1,'LOW'],['python_oop',3,10,7.5,8,10,10,8.1,'HIGH'],
+      ['sympy',4,8,8.5,10,8,10,8.1,'HIGH'],['functions',3,10,8.5,7.5,10,10,8.2,'HIGH'],
+      ['oop_intro',4,null,9,null,10,10,8.2,'HIGH'],['troubleshooting',5.5,null,null,9,10,null,8.2,'LOW'],
+      ['need_for_speed',3,null,10,8.5,10,10,8.3,'HIGH'],['numpy_vs_numba_vs_jax',3,10,8.5,8.5,10,10,8.3,'HIGH'],
+      ['python_essentials',3,10,8.5,null,10,10,8.3,'HIGH'],['python_advanced_features',4.5,null,8.5,9,10,10,8.4,'LOW'],
+      ['debugging',3.5,10,10,9,10,10,8.8,'HIGH'],['status',10,null,9,null,10,null,9.7,'NONE'],
+      ['intro',10,null,null,null,10,null,10.0,'NONE']
+    ].map(([name,writing,math,code,figures,links,admon,overall,priority]) =>
+      ({ name, writing, math, code, figures, links, admon, overall, priority }));
+    const keyed = raw.slice().sort((a, b) => {
+      const av = a[sortKey], bv = b[sortKey];
+      if (av == null && bv == null) return 0;
+      if (av == null) return 1;
+      if (bv == null) return -1;
+      return asc ? av - bv : bv - av;
+    });
+    const prio = { HIGH: ['#f6e5e2', '#8c2f24'], MEDIUM: ['#f6ecd8', '#8a5a1a'], LOW: ['#f2edd7', '#6b5d34'], NONE: ['#e5efe7', '#2e5e3b'] };
+    const fmt = v => v == null ? '—' : (v % 1 ? v.toFixed(1) : String(v));
+    const lectures = keyed.map((l, i) => ({
+      rank: i + 1, name: l.name,
+      writing: fmt(l.writing), math: fmt(l.math), code: fmt(l.code), figures: fmt(l.figures),
+      links: fmt(l.links), admon: fmt(l.admon), overall: l.overall.toFixed(1),
+      wColor: l.writing != null && l.writing <= 4 ? '#a63a2e' : '#414b5c',
+      wWeight: l.writing != null && l.writing <= 4 ? 700 : 400,
+      priority: l.priority, prioBg: prio[l.priority][0], prioColor: prio[l.priority][1]
+    }));
+    const colDefs = [['writing','Writing'],['math','Math'],['code','Code'],['figures','Figures'],['links','Links'],['admon','Admon'],['overall','Overall']];
+    const columns = colDefs.map(([key, label]) => ({
+      label, key,
+      arrow: sortKey === key ? (asc ? ' ▲' : ' ▼') : '',
+      color: sortKey === key ? '#17538f' : '#8a8577',
+      onSort: () => this.setState(s => ({ sortKey: key, asc: s.sortKey === key ? !s.asc : true }))
+    }));
+    const catData = [['Writing',4.1],['Math',9.0],['Code',8.4],['Figures',7.3],['References',null],['Links',9.8],['Admon',9.9]];
+    return {
+      lectures, columns,
+      cats: catData.map(([name, v]) => ({
+        name, score: v == null ? 'N/A' : v.toFixed(1),
+        color: this.scoreColor(v), barWidth: v == null ? '0%' : (v * 10) + '%'
+      })),
+      systemic: [
+        ['qe-writing-006','Capitalize lecture titles properly',23,178],['qe-fig-005','Descriptive figure names for cross-referencing',21,128],
+        ['qe-writing-008','Remove excessive whitespace between words',16,43],['qe-writing-001','Use one sentence per paragraph',15,29],
+        ['qe-fig-008','Use lw=2 for line charts',14,63],['qe-fig-001','Do not set figure size unless necessary',9,22],
+        ['qe-writing-004','Avoid unnecessary capitalization in narrative text',6,14],['qe-fig-002','Prefer code-generated figures',5,15],
+        ['qe-fig-003','No matplotlib embedded titles',5,11],['qe-code-003','Package installation at lecture top',3,3]
+      ].map(([id, title, reach, occ]) => ({ id, title, reach, occ, barWidth: Math.round(reach / 27 * 100) + '%' })),
+      recs: [
+        { n: 1, title: 'Sentence-case the H2+ headings (qe-writing-006)', desc: '23 / 27 lectures, 178 headings. A scriptable sweep and the highest-leverage single action in this series: clearing this rule alone takes it from 20 HIGH to 3 and lifts Writing from 4.1 to 5.7. The sweep needs the 376-entry proper-noun allowlist in tools/qestyle_rules.py.' },
+        { n: 2, title: 'Finish Writing with the other three mechanical rules', desc: 'qe-writing-008 (43 occurrences), qe-writing-001 (29) and qe-writing-004 (14) — 86 occurrences, all sweepable. On the same projection these clear the last three HIGH lectures and empty the HIGH list without touching a single judgment finding.' },
+        { n: 3, title: 'Close the two {exercise-start} fences in python_by_example.md', desc: 'Lines 499 and 549 (qe-admon-003). Out of leverage order deliberately — it clears no HIGH lecture, but it is two lines, a build defect rather than a style one, and the only qe-admon-003 violation in the corpus.' },
+        { n: 4, title: 'Figures — worth doing, but not for this series\u2019 sake', desc: 'qe-fig-005, qe-fig-008 and qe-fig-001 lift Figures from 7.3 to 9.4 yet leave all 20 HIGH lectures HIGH — nothing here is floored by Figures. Do them inside the corpus-wide sweep (qe-fig-005 reaches 273 of 348 lectures).' },
+        { n: 5, title: 'Treat the judgment backlog as editorial work, not remediation', desc: 'qe-writing-005 in 23 lectures, qe-writing-003 in 23, qe-writing-002 in 21, qe-code-001 in 19 — reading passes of roughly five minutes a lecture. None gates a priority bucket once item 2 empties the HIGH list. Schedule them for the prose, not for the score.' }
+      ],
+      clean: [
+        ['qe-admon-002','Dropdown class for solutions'],['qe-code-002','Unicode Greek in code'],['qe-code-005','quantecon timeit for benchmarking'],
+        ['qe-fig-004','Caption formatting'],['qe-fig-010','Plotly latex directive'],['qe-link-001','Markdown links in-series'],
+        ['qe-math-003','Square brackets for matrices'],['qe-math-004','No bold matrices/vectors'],['qe-math-005','Curly brackets for sequences'],
+        ['qe-math-006','aligned environment for PDF'],['qe-math-007','Automatic equation numbering'],['qe-math-008','Explain special notation'],
+        ['qe-math-011','Plain-letter distribution names'],['qe-math-013','{eq} equation references'],['qe-ref-001','Correct citation style'],
+        ['qe-writing-009','Write "IID"']
+      ].map(([id, title]) => ({ id, title }))
+    };
+  }
+}
+</script>
+</body>
+</html>

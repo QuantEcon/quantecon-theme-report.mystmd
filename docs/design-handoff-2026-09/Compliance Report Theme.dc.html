@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #faf9f6; }
+  a { color: #17538f; text-decoration: none; }
+  a:hover { color: #0d3a66; text-decoration: underline; }
+  * { box-sizing: border-box; }
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #faf9f6; color: #1c2534; font-family: 'Source Sans 3', sans-serif; display: flex; flex-direction: column;">
+
+  <header style="position: sticky; top: 0; z-index: 10; background: #14243c; color: #f2f0eb; display: flex; align-items: center; gap: 24px; padding: 0 32px; height: 58px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 30px; height: 30px; border-radius: 6px; background: #2c72b8; display: flex; align-items: center; justify-content: center; font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 17px; color: #fff;">Q</div>
+      <div style="font-weight: 600; font-size: 15px; letter-spacing: 0.01em;">QuantEcon <span style="font-weight: 400; opacity: 0.75;">/ Lecture Style Compliance</span></div>
+    </div>
+    <nav style="margin-left: auto; display: flex; align-items: center; gap: 24px; font-size: 13.5px; font-weight: 500;">
+      <a href="#focus" style="color: #c8d4e4;">Triage</a>
+      <a href="#wins" style="color: #c8d4e4;">Biggest wins</a>
+      <a href="#changed" style="color: #c8d4e4;">Trend</a>
+      <a href="#method" style="color: #c8d4e4;">Method</a>
+      <a href="https://github.com/QuantEcon/compliance-lecture-style" style="color: #f2f0eb; border: 1px solid rgba(255,255,255,0.25); border-radius: 6px; padding: 5px 12px;">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <div style="display: flex; flex: 1; align-items: stretch;">
+
+    <sc-if value="{{ showSidebar }}" hint-placeholder-val="{{ true }}">
+    <aside style="width: 248px; flex-shrink: 0; border-right: 1px solid #e7e3d9; padding: 28px 20px; font-size: 13.5px; position: sticky; top: 58px; align-self: flex-start; max-height: calc(100vh - 58px); overflow-y: auto;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: #8a8577; margin-bottom: 6px;">Overview</div>
+        <a href="#" style="display: block; padding: 6px 10px; border-radius: 6px; background: #eceef4; color: #14243c; font-weight: 600;">Report home</a>
+        <a href="Charts.dc.html" style="display: block; padding: 6px 10px; border-radius: 6px; color: #414b5c;" style-hover="background: #f1efe8;">Charts</a>
+        <a href="#" style="display: block; padding: 6px 10px; border-radius: 6px; color: #414b5c;" style-hover="background: #f1efe8;">Full findings &amp; remediation</a>
+        <a href="#" style="display: block; padding: 6px 10px; border-radius: 6px; color: #414b5c;" style-hover="background: #f1efe8;">Scoring rubric</a>
+        <a href="#" style="display: block; padding: 6px 10px; border-radius: 6px; color: #414b5c;" style-hover="background: #f1efe8;">Appendix — feedback</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 2px; margin-top: 26px;">
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: #8a8577; margin-bottom: 8px;">Series reports</div>
+        <sc-for list="{{ seriesNav }}" as="s" hint-placeholder-count="5">
+          <a href="Series%20Report.dc.html" style="display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 6px; color: #414b5c;" style-hover="background: #f1efe8;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: {{ s.dot }}; flex-shrink: 0;"></span>
+            <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'IBM Plex Mono', monospace; font-size: 12px;">{{ s.name }}</span>
+            <span style="color: #8a8577; font-size: 11.5px;">{{ s.count }}</span>
+          </a>
+        </sc-for>
+      </div>
+      <div style="margin-top: 26px; padding: 12px 14px; border: 1px solid #e7e3d9; border-radius: 10px; background: #fff; font-size: 12px; color: #6a7180; line-height: 1.5;">
+        Pinned snapshot · one commit per series<br>
+        <a href="#" style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;">data/snapshot.json</a>
+      </div>
+    </aside>
+    </sc-if>
+
+    <main style="flex: 1; min-width: 0; padding: 48px clamp(20px, 4vw, 56px) 80px; max-width: 980px;">
+
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; background: #14243c; color: #f2f0eb; padding: 4px 10px; border-radius: 999px;">Pass 2026-08</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6a7180; border: 1px solid #ddd8cc; padding: 4px 10px; border-radius: 999px;">vs 2026-05</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6a7180; border: 1px solid #ddd8cc; padding: 4px 10px; border-radius: 999px;">348 lectures · 5 series</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6a7180; border: 1px solid #ddd8cc; padding: 4px 10px; border-radius: 999px;">49 rules</span>
+      </div>
+
+      <h1 style="font-family: 'Source Serif 4', serif; font-size: 44px; font-weight: 700; line-height: 1.12; margin: 0 0 18px; letter-spacing: -0.015em; text-wrap: balance;">Lecture style compliance</h1>
+      <p style="font-size: 18px; line-height: 1.6; color: #414b5c; max-width: 640px; margin: 0 0 14px; text-wrap: pretty;">A standing record of how the QuantEcon lecture corpus conforms to the style guide, scored against 7 rule categories from the <a href="#" style="font-family: 'IBM Plex Mono', monospace; font-size: 15px;">action-style-guide</a> registry. Each pass re-measures the whole corpus and updates this record in place.</p>
+      <p style="font-size: 15px; line-height: 1.6; color: #6a7180; max-width: 640px; margin: 0 0 40px;">This page is for triage — <em>where should we put our attention?</em> Start here, then open a series report for detail, the charts for a visual overview, or the full findings for the complete breakdown.</p>
+
+      <section id="focus" style="margin-bottom: 56px;">
+        <div style="display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid #14243c; padding-bottom: 10px; margin-bottom: 4px;">
+          <h2 style="font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 700; margin: 0;">Where to focus first</h2>
+          <span style="font-size: 13px; color: #8a8577;">Series ranked worst → best</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 58px minmax(160px, 1.4fr) minmax(110px, 1fr) 88px minmax(150px, 1fr); gap: 0 14px; align-items: center; font-size: 12px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: #8a8577; padding: 12px 14px 8px;">
+          <span>Attn</span><span>Series</span><span>Score / 10</span><span>Needs work</span><span>Weakest categories</span>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <sc-for list="{{ series }}" as="s" hint-placeholder-count="5">
+            <div style="display: grid; grid-template-columns: 58px minmax(160px, 1.4fr) minmax(110px, 1fr) 88px minmax(150px, 1fr); gap: 0 14px; align-items: center; padding: 13px 14px; border-top: 1px solid #eae6dc; border-radius: 8px;" style-hover="background: #f4f2ec;">
+              <span style="font-size: 12px; font-weight: 700; color: {{ s.attnColor }}; letter-spacing: 0.04em;">{{ s.attn }}</span>
+              <a href="Series%20Report.dc.html" style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 500; min-width: 0; overflow-wrap: break-word;">{{ s.name }}</a>
+              <span style="display: flex; align-items: center; gap: 10px;">
+                <span style="flex: 1; height: 6px; border-radius: 3px; background: #e7e3d9; overflow: hidden; display: block;"><span style="display: block; height: 100%; border-radius: 3px; background: {{ s.attnColor }}; width: {{ s.barWidth }};"></span></span>
+                <span style="font-variant-numeric: tabular-nums; font-weight: 600; font-size: 14px;">{{ s.score }}</span>
+              </span>
+              <span style="font-variant-numeric: tabular-nums; font-size: 13.5px; color: #414b5c;"><strong>{{ s.needsWork }}</strong> / {{ s.total }}</span>
+              <span style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <sc-for list="{{ s.weakest }}" as="w" hint-placeholder-count="2">
+                  <span style="font-size: 11.5px; font-weight: 600; background: #f0ece2; color: #6b5d34; border-radius: 5px; padding: 3px 8px; font-variant-numeric: tabular-nums;">{{ w }}</span>
+                </sc-for>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top: 20px; display: flex; gap: 16px; background: #fff; border: 1px solid #e7e3d9; border-left: 4px solid #2c72b8; border-radius: 10px; padding: 18px 22px;">
+          <div style="font-size: 15px; line-height: 1.6; color: #2b3444; text-wrap: pretty;"><strong>The useful triage question is not <em>which lectures</em> but <em>which category</em>.</strong> Every HIGH-priority lecture is HIGH because a category fell below the bar — all 197 of them — while no lecture's overall score is at or below 5.0. Writing is the binding constraint: at or below the floor in <strong>176 of 197</strong> HIGH lectures, against Math's 64 and Figures' 20. Fix a category across a series and a large block of HIGH lectures clears at once.</div>
+        </div>
+      </section>
+
+      <section id="wins" style="margin-bottom: 56px;">
+        <div style="display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid #14243c; padding-bottom: 10px; margin-bottom: 18px;">
+          <h2 style="font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 700; margin: 0;">The biggest wins</h2>
+          <span style="font-size: 13px; color: #8a8577;">Fix once, lift dozens of lectures · ordered by reach out of 348</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px;">
+          <sc-for list="{{ wins }}" as="w" hint-placeholder-count="8">
+            <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px;" style-hover="border-color: #b9c6d8;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-weight: 700; font-size: 15px; flex: 1;">{{ w.title }}</span>
+                <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 5px; background: {{ w.effortBg }}; color: {{ w.effortColor }};">{{ w.effort }}</span>
+              </div>
+              <div style="font-size: 13.5px; color: #6a7180; line-height: 1.5;">{{ w.desc }}</div>
+              <div style="display: flex; align-items: center; gap: 10px; margin-top: 2px;">
+                <span style="flex: 1; height: 5px; border-radius: 3px; background: #eeeade; overflow: hidden; display: block;"><span style="display: block; height: 100%; background: {{ w.band }}; border-radius: 3px; width: {{ w.barWidth }};"></span></span>
+                <span style="font-variant-numeric: tabular-nums; font-size: 12px; font-weight: 700; background: {{ w.band }}; color: #fff; border-radius: 5px; padding: 2px 8px;">{{ w.pct }}</span>
+                <span style="font-variant-numeric: tabular-nums; font-size: 12.5px; color: #6a7180;">{{ w.reach }} lectures</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; margin-top: 14px; font-size: 12px; color: #8a8577; flex-wrap: wrap;">
+          <span style="font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Share of corpus</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #173f6d;"></span>≥ 75%</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #2c72b8;"></span>≥ 60%</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #5f8fc2;"></span>≥ 45%</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #96b3d2;"></span>≥ 30%</span>
+        </div>
+        <p style="font-size: 14px; color: #6a7180; margin: 12px 0 0; line-height: 1.6;">Mechanical = a scriptable sweep, no judgment needed — the highest-leverage place to start. The <a href="#">remediation plan</a> has the ordered list and the exact lectures.</p>
+      </section>
+
+      <section id="fix-now" style="margin-bottom: 56px;">
+        <div style="display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid #a63a2e; padding-bottom: 10px; margin-bottom: 18px;">
+          <h2 style="font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 700; margin: 0; color: #8c2f24;">Fix immediately</h2>
+          <span style="font-size: 13px; color: #8a8577;">Structural, not stylistic — these change what the build produces</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <sc-for list="{{ urgent }}" as="u" hint-placeholder-count="4">
+            <div style="background: #fdf7f5; border: 1px solid #ecd5cf; border-radius: 10px; padding: 15px 18px; display: flex; flex-wrap: wrap; gap: 16px 18px; align-items: flex-start;">
+              <div style="flex: 1 1 200px; min-width: 180px; max-width: 260px;">
+                <a href="#" style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 500; color: #8c2f24; word-break: break-all;">{{ u.where }}</a>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #b07a70; margin-top: 4px;">{{ u.rule }}</div>
+              </div>
+              <div style="flex: 999 1 260px; min-width: 240px; font-size: 14px; line-height: 1.55; color: #4a3833;"><strong>{{ u.problem }}</strong> — {{ u.why }}</div>
+              <div style="flex: 1 1 220px; min-width: 210px; max-width: 260px; background: #fff; border: 1px solid #e7ddd4; border-radius: 8px; overflow: hidden;">
+                <a href="{{ u.issueUrl }}" style="display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px 8px; color: inherit;" style-hover="text-decoration: none; background: #faf7f3;">
+                  <span style="width: 14px; height: 14px; border-radius: 50%; border: 2px solid {{ u.issueColor }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: {{ u.issueColor }};"></span></span>
+                  <span style="min-width: 0;">
+                    <span style="display: block; font-size: 12.5px; font-weight: 600; color: #2b3444; line-height: 1.35;">{{ u.issueTitle }}</span>
+                    <span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8a8577; margin-top: 3px;">{{ u.issue }} · <span style="color: {{ u.issueColor }}; font-weight: 600;">{{ u.issueState }}</span></span>
+                  </span>
+                </a>
+                <a href="{{ u.prUrl }}" style="display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-top: 1px solid #f1ede4; color: inherit;" style-hover="text-decoration: none; background: #faf7f3;">
+                  <span style="font-size: 12px; color: {{ u.prColor }}; flex-shrink: 0;">{{ u.prIcon }}</span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8a8577; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ u.pr }}</span>
+                  <span style="margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; padding: 2px 7px; border-radius: 4px; background: {{ u.prBg }}; color: {{ u.prColor }}; flex-shrink: 0;">{{ u.prState }}</span>
+                </a>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top: 18px; background: #fff; border: 1px solid #e7e3d9; border-radius: 10px; overflow: hidden;">
+          <div style="display: flex; align-items: center; gap: 8px; background: #eef2f7; padding: 10px 18px; font-size: 13px; font-weight: 700; color: #17538f;">◈ Note — a correction to the previous pass</div>
+          <div style="padding: 14px 18px; font-size: 14px; line-height: 1.6; color: #414b5c;">The previous pass reported <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px;">divergence_measures.md:134</span> as an <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px;">align</span> inside <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px;">$$</span> that breaks the PDF build. Re-checked mechanically: there is no such block anywhere in the corpus. It is a <em>bare</em> top-level alignment block, which MyST's amsmath extension handles — a convention outlier reported under <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px;">qe-math-006</span>, but not a build breaker.</div>
+        </div>
+      </section>
+
+      <section id="changed" style="margin-bottom: 56px;">
+        <div style="display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid #14243c; padding-bottom: 10px; margin-bottom: 18px;">
+          <h2 style="font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 700; margin: 0;">What changed since 2026-05</h2>
+          <span style="font-size: 13px; color: #8a8577;">Corpus grew 300 → 348 · of 35 comparable rules: 26 improved, 5 level, 4 worse</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px;">
+          <div>
+            <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #3e7d4f; margin-bottom: 10px;">▲ Largest improvements</div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <sc-for list="{{ improving }}" as="r" hint-placeholder-count="4">
+                <div style="display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #e7e3d9; border-radius: 8px; padding: 10px 14px;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 600; color: #3e7d4f; background: #eaf3ec; padding: 3px 7px; border-radius: 4px; flex-shrink: 0;">{{ r.id }}</span>
+                  <span style="flex: 1; font-size: 13.5px; color: #414b5c;">{{ r.desc }}</span>
+                  <span style="font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 700; color: #3e7d4f; white-space: nowrap;">{{ r.delta }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #a63a2e; margin-bottom: 10px;">▼ All regressions</div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <sc-for list="{{ worsening }}" as="r" hint-placeholder-count="4">
+                <div style="display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #e7e3d9; border-radius: 8px; padding: 10px 14px;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 600; color: #a63a2e; background: #f8ebe8; padding: 3px 7px; border-radius: 4px; flex-shrink: 0;">{{ r.id }}</span>
+                  <span style="flex: 1; font-size: 13.5px; color: #414b5c;">{{ r.desc }}</span>
+                  <span style="font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 700; color: #a63a2e; white-space: nowrap;">{{ r.delta }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 14px; color: #6a7180; margin: 18px 0 0; line-height: 1.6; max-width: 720px; text-wrap: pretty;">Three of the four regressions are in Figures, for the same reason: new lectures add figures faster than the figure conventions are applied to them. See the <a href="#">trend chart</a> for every rule.</p>
+      </section>
+
+      <section id="method" style="margin-bottom: 56px;">
+        <div style="display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid #14243c; padding-bottom: 10px; margin-bottom: 18px;">
+          <h2 style="font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 700; margin: 0;">How this pass was measured</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px;">
+          <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 10px; padding: 18px;">
+            <div style="font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 700; color: #14243c;">41<span style="font-size: 17px; color: #8a8577;"> / 49</span></div>
+            <div style="font-size: 13px; color: #6a7180; margin-top: 4px; line-height: 1.5;">rules checked by program over a pinned corpus snapshot</div>
+          </div>
+          <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 10px; padding: 18px;">
+            <div style="font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 700; color: #14243c;">8</div>
+            <div style="font-size: 13px; color: #6a7180; margin-top: 4px; line-height: 1.5;">judgment-only rules reviewed by reading — all 348 lectures covered</div>
+          </div>
+          <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 10px; padding: 18px;">
+            <div style="font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 700; color: #14243c;">348<span style="font-size: 17px; color: #8a8577;"> / 348</span></div>
+            <div style="font-size: 13px; color: #6a7180; margin-top: 4px; line-height: 1.5;">lectures through the judgment layer — cross-series comparison stands on its own</div>
+          </div>
+        </div>
+        <p style="font-size: 15px; line-height: 1.65; color: #414b5c; max-width: 720px; margin: 0 0 16px; text-wrap: pretty;">Scores and priority buckets are derived arithmetically from the rubric. A category scoring 10 means <em>no mechanical violation was measured in it</em>, not that a human declared it perfect. <a href="#">Spec §8</a> describes the layers; <a href="#">§9</a> lists exactly which rules fall where.</p>
+        <div style="background: #fff; border: 1px solid #e7e3d9; border-radius: 10px; overflow: hidden;">
+          <div style="display: flex; align-items: center; gap: 8px; background: #faf1e4; padding: 10px 18px; font-size: 13px; font-weight: 700; color: #8a5a1a;">⚠ Score levels are not comparable with the previous period</div>
+          <div style="padding: 14px 18px; font-size: 14px; line-height: 1.6; color: #414b5c;">The 2026-08 row folds a judgment overlay into 348 of 348 lectures; 2026-05 folded one into 0 of 300. A lecture assessed against more rules scores lower — the published mean moving 8.2 → 7.7 is the judgment layer landing on one period, not the lectures changing. Like for like (evidence layer alone, <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px;">history_mechanical.csv</span>): 8.2 → 8.4 overall, Writing 6.6 → 7.1, HIGH 102 → 85. The trend above is therefore reported on <strong>rule reach</strong>, never on published scores across a coverage change.</div>
+        </div>
+      </section>
+
+      <section id="navigate" style="margin-bottom: 24px;">
+        <div style="display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid #14243c; padding-bottom: 10px; margin-bottom: 18px;">
+          <h2 style="font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 700; margin: 0;">Navigating this report</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+          <sc-for list="{{ navCards }}" as="c" hint-placeholder-count="4">
+            <a href="{{ c.href }}" style="display: flex; flex-direction: column; gap: 6px; background: #fff; border: 1px solid #e7e3d9; border-radius: 10px; padding: 18px 20px; color: inherit;" style-hover="border-color: #2c72b8; text-decoration: none;">
+              <span style="font-weight: 700; font-size: 15.5px; color: #14243c;">{{ c.title }} →</span>
+              <span style="font-size: 13.5px; color: #6a7180; line-height: 1.5;">{{ c.desc }}</span>
+            </a>
+          </sc-for>
+        </div>
+        <p style="font-size: 13px; color: #8a8577; margin: 18px 0 0; line-height: 1.6;">Rules are cited by their <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">action-style-guide</span> IDs, e.g. <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">qe-fig-001</span>. Seven are tagged <strong>(proposed)</strong> — documented in the style guide but not yet in the rule registry.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <footer style="border-top: 1px solid #e7e3d9; padding: 22px 56px; display: flex; align-items: center; gap: 16px; font-size: 12.5px; color: #8a8577;">
+    <span>© QuantEcon · CC BY-SA 4.0</span>
+    <span style="margin-left: auto;">Last changed Sep 01, 2026 · <a href="https://github.com/QuantEcon/compliance-lecture-style">source ↗</a></span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showSidebar&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Layout&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const red = '#a63a2e', amber = '#c07a1d';
+    const s = (name, score, needsWork, total, weakest, high) => ({
+      name, score: score.toFixed(1), barWidth: (score * 10) + '%',
+      needsWork, total, weakest,
+      attn: high ? 'HIGH' : 'SOME', attnColor: high ? red : amber
+    });
+    const win = (title, desc, reach, mech) => {
+      const pct = Math.round(reach / 348 * 100);
+      const band = pct >= 75 ? '#173f6d' : pct >= 60 ? '#2c72b8' : pct >= 45 ? '#5f8fc2' : '#96b3d2';
+      return {
+      title, desc, reach, pct: pct + '%', band,
+      barWidth: pct + '%',
+      effort: mech ? 'MECHANICAL' : 'HUMAN PASS',
+      effortBg: mech ? '#e8f0e9' : '#f3ecdf',
+      effortColor: mech ? '#3e7d4f' : '#8a5a1a'
+    }; };
+    return {
+      showSidebar: this.props.showSidebar ?? true,
+      seriesNav: [
+        { name: 'python-advanced', count: 68, dot: red },
+        { name: 'python.myst', count: 145, dot: red },
+        { name: 'lecture-dp', count: 52, dot: red },
+        { name: 'python-programming', count: 27, dot: red },
+        { name: 'python-intro', count: 56, dot: amber }
+      ],
+      series: [
+        s('lecture-python-advanced.myst', 7.4, 43, 68, ['Writing 4.6', 'Math 5.8'], true),
+        s('lecture-python.myst', 7.7, 82, 145, ['Writing 4.5', 'Figures 6.5'], true),
+        s('lecture-dp', 7.7, 34, 52, ['Writing 4.7', 'Figures 6.4'], true),
+        s('lecture-python-programming', 8.0, 20, 27, ['Writing 4.1', 'Figures 7.3'], true),
+        s('lecture-python-intro', 8.1, 19, 56, ['Writing 5.2', 'Figures 6.5'], false)
+      ],
+      wins: [
+        win('Name your figures', 'Add a name: so figures can be cross-referenced with numref', 273, true),
+        win('Collapse double spaces', 'Reduce runs of spaces between words to one', 237, true),
+        win('Figure sizes', 'Drop figsize= overrides — let the site defaults apply', 224, true),
+        win('Line widths', 'Pass lw=2 on line plots for consistent weight', 196, true),
+        win('Plot titles → captions', 'Move ax.set_title(...) out of the plot into the figure caption', 165, false),
+        win('Heading capitalization', 'Section headings → sentence case (first word + proper nouns only)', 132, true),
+        win('Expectation notation (proposed)', 'Use \\mathbb{E} / \\mathbb{P} / \\mathbb{V} with braces', 124, true),
+        win('Narrative citations', 'Use {cite:t} where the author name is part of the sentence', 106, false)
+      ],
+      urgent: (() => {
+        const issueStates = { open: '#3e7d4f', closed: '#7d5bb5' };
+        const prStates = { MERGED: ['#7d5bb5', '#f1ecf8'], OPEN: ['#3e7d4f', '#e8f0e9'], 'NO PR': ['#8a8577', '#f1ede4'] };
+        const card = (u) => ({
+          ...u,
+          issueColor: issueStates[u.issueState] || '#8a8577',
+          prIcon: u.prState === 'MERGED' ? '⇋' : u.prState === 'OPEN' ? '⎇' : '·',
+          prColor: prStates[u.prState][0], prBg: prStates[u.prState][1]
+        });
+        return [
+        card({ where: 'lecture-python-programming · python_by_example.md:499, :549', rule: 'qe-admon-003',
+          issueTitle: 'Close unterminated {exercise-start} fences', issue: 'programming#—', issueState: 'open',
+          issueUrl: 'https://github.com/QuantEcon/lecture-python-programming/issues',
+          pr: 'programming#— fix fences', prState: 'OPEN', prUrl: 'https://github.com/QuantEcon/lecture-python-programming/pulls',
+          problem: 'Two {exercise-start} fences are never closed', why: 'the directive swallows the rest of the exercise, including a nested {hint}. The only two malformed gated directives in 690 across the corpus; the exercise and its hint do not render as intended.' }),
+        card({ where: 'lecture-python.myst · cross_product_trick.md:133', rule: 'cross-reference',
+          issueTitle: 'Repair eq:Kalman102 cross-reference', issue: 'python.myst#—', issueState: 'open',
+          issueUrl: 'https://github.com/QuantEcon/lecture-python.myst/issues',
+          pr: 'python.myst#— fix braces + label', prState: 'MERGED', prUrl: 'https://github.com/QuantEcon/lecture-python.myst/pulls',
+          problem: '{eq}`eq:Kalman102} — mismatched braces', why: 'the label is attached to a bare align* block that carries no label, so the cross-reference silently fails to render.' }),
+        card({ where: 'lecture-dp · cross_product_trick.md:133', rule: 'synced copy',
+          issueTitle: 'Synced from lecture-python.myst — fix upstream', issue: 'tracked upstream', issueState: 'open',
+          issueUrl: 'https://github.com/QuantEcon/lecture-python.myst/issues',
+          pr: 'resolved by upstream sync', prState: 'NO PR', prUrl: 'https://github.com/QuantEcon/lecture-dp',
+          problem: 'The same defect', why: 'lecture-dp syncs this lecture from lecture-python.myst — fixing it upstream fixes both.' }),
+        card({ where: 'lecture-python.myst · ifp_advanced.md:158 (+ lecture-dp copy)', rule: 'qe-math-007',
+          issueTitle: 'Replace raw \\label with MyST equation label', issue: 'python.myst#—', issueState: 'open',
+          issueUrl: 'https://github.com/QuantEcon/lecture-python.myst/issues',
+          pr: 'no fixing PR yet', prState: 'NO PR', prUrl: 'https://github.com/QuantEcon/lecture-python.myst/pulls',
+          problem: 'Raw LaTeX \\label{a:y0} inside a $$ block', why: 'MyST does not resolve \\label; the equation cannot be referenced with {eq}.' })
+        ];
+      })(),
+      improving: [
+        { id: 'qe-writing-008', desc: 'Remove excessive whitespace between words', delta: '78% → 68%' },
+        { id: 'qe-writing-006', desc: 'Capitalize lecture titles properly', delta: '47% → 38%' },
+        { id: 'qe-fig-008', desc: 'Figure-directive option conventions', delta: '62% → 56%' },
+        { id: 'qe-writing-001', desc: 'Use one sentence per paragraph', delta: '55% → 50%' }
+      ],
+      worsening: [
+        { id: 'qe-fig-004', desc: 'Caption formatting conventions', delta: '9% → 17%' },
+        { id: 'qe-fig-001', desc: 'Do not set figure size unless necessary', delta: '62% → 64%' },
+        { id: 'qe-fig-003', desc: 'No matplotlib embedded titles', delta: '46% → 47%' },
+        { id: 'qe-code-002', desc: 'Use unicode Greek letters in code', delta: '18% → 19%' }
+      ],
+      navCards: [
+        { href: 'Series%20Report.dc.html', title: 'Series reports', desc: 'Per-series detail: scores, ranked lectures, and every lecture\u2019s own report. Start here once you\u2019ve picked a series.' },
+        { href: 'Charts.dc.html', title: 'Charts', desc: 'Heatmap, rule reach, the cross-pass trend, priority mix.' },
+        { href: 'Lecture%20Report.dc.html', title: 'Lecture reports', desc: 'Every lecture\u2019s own page: score breakdown, issues by severity, strengths, recommended actions.' },
+        { href: '#method', title: 'Scoring rubric', desc: 'The rubric, the pass methodology, and the measured deterministic coverage.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
