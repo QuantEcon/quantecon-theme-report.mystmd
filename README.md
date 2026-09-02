@@ -31,7 +31,7 @@ decisions, and the phased plan are in
 | [`README.md`](./docs/design-handoff-2026-09/README.md) | The design brief: goals, data contracts, directive set, component specs, tokens, acceptance criteria |
 | [`REVIEW.md`](./docs/design-handoff-2026-09/REVIEW.md) | Findings with evidence, and the decision record (D1–D8) |
 | [`PLAN.md`](./docs/design-handoff-2026-09/PLAN.md) | The phased plan across the three repositories of the family |
-| `*.dc.html` + `support.js` | High-fidelity references for the landing, series, lecture and charts pages (open next to `support.js`) |
+| `*.dc.html` + `support.js` | High-fidelity references for the landing, series, lecture and charts pages (open next to `support.js`). They load React, ReactDOM and Babel from unpkg when opened and evaluate their inline component script, so treat them as local design references only, never as code to ship |
 
 ## What ships from here
 

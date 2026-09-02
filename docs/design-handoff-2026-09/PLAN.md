@@ -1,9 +1,9 @@
 # PLAN — QuantEcon report theme (compliance variant) and its plugin family
 
 Status: **decisions made and trackers filed, 2026-09-02** (REVIEW.md §10). Both new repos
-exist with their initial PR (#1) open; the three `Project`-typed trackers and their native
+exist with an initial pull request open in each; the three `Project`-typed trackers and their native
 sub-issues are listed in the last section, with the drafts under `workplan/`. Nothing in
-the lecture repo's cutover tracker (#147) changes.
+the lecture theme's cutover tracker, quantecon-theme.mystmd#147, changes.
 
 Companion documents: [REVIEW.md](./REVIEW.md) (findings, evidence, decision record),
 [README.md](./README.md) (the design brief), the four `*.dc.html` references.
@@ -19,7 +19,7 @@ the lecture theme during its all-or-nothing cutover.
 
 ```
 quantecon-theme.mystmd            lecture theme — unchanged by this plan
-                                  plugins/git-metadata.mjs stays (move tracked in #156)
+                                  plugins/git-metadata.mjs stays (move tracked in quantecon-theme.mystmd#156)
 
 quantecon-theme-report.mystmd     report theme; first variant: compliance
   app/                            Remix shell + renderers implementing the datavis contract
@@ -45,7 +45,7 @@ Consumption per compliance repo, all pinned:
 | `site.template` | `https://github.com/QuantEcon/quantecon-theme-report.mystmd/releases/download/vX.Y.Z/quantecon-theme-report.zip` |
 | `project.plugins[0]` | `https://github.com/QuantEcon/quantecon-plugins.mystmd/releases/download/vA.B.C/datavis.mjs` |
 | `project.plugins[1]` | `https://github.com/QuantEcon/quantecon-theme-report.mystmd/releases/download/vX.Y.Z/compliance.mjs` |
-| `project.plugins[2]` | the `git-metadata.mjs` URL this repo documents (until #156 moves it) |
+| `project.plugins[2]` | the `git-metadata.mjs` URL that `quantecon-theme.mystmd` documents (until quantecon-theme.mystmd#156 moves it) |
 
 ## Phases
 
@@ -59,7 +59,7 @@ Consumption per compliance repo, all pinned:
       `.nvmrc`, `.npmrc`. Rename zip and package (`quantecon-theme-report.zip`,
       `@quantecon/report-theme`, title "QuantEcon Report Theme"). `preview.yml` targets
       `compliance-lecture-style`'s mystmd branch.
-- [ ] `FAMILY.md` in the lecture repo (linked from the others): the conventions every
+- [ ] `FAMILY.md` in `quantecon-theme.mystmd` (linked from the others): the conventions every
       `quantecon-*.mystmd` repo keeps in step — release zip layout and `template.yml`
       stamping, tag-pinned plugin URLs as release assets, the visual harness with
       platform-suffixed baselines, the FOUC guard, asset-URL rewriting, Keep-a-Changelog
@@ -128,7 +128,7 @@ the D6 project in the compliance repo can start. Effort: 3–4 days.
 - [ ] Top bar: fixed container, title block, `site.nav` links, GitHub button, search from
       `@myst-theme/site`; no launch, compute, downloads or contrast items.
 - [ ] Persistent 248px sidebar at ≥ lg from the `series_nav` part; mobile drawer modelled
-      on #144 once it lands; snapshot card from `report_meta`.
+      on quantecon-theme.mystmd#144 once it lands; snapshot card from `report_meta`.
 - [ ] Footer from the `footer` part + `report_meta`, with "Last changed" from the
       `git-metadata` data.
 - [ ] Section-heading and admonition restyle on standard nodes; `template.yml` with
@@ -169,7 +169,7 @@ mostly in the compliance repo.
 ### Phase 5 — Follow-ups (not gating)
 
 - [ ] Dark and auto colour schemes for the report theme (the D5 feature request).
-- [ ] #156: move `git-metadata` into the plugins repo as a standalone plugin.
+- [ ] quantecon-theme.mystmd#156: move `git-metadata` into the plugins repo as a standalone plugin.
 - [ ] `UPSTREAM-CANDIDATES.yml` entries: the portable-directive pattern and the datavis
       family; extract to a general project or propose upstream if interest appears.
 - [ ] A `docs/` feature reference for the report theme mirroring the lecture one.
@@ -187,7 +187,7 @@ Phase 0  repos + scaffolds + contracts
 ```
 
 Phases 1a, 1b and 2 run in parallel after Phase 0; only Phase 3 needs all three. The
-lecture repo has no work item in this plan beyond `FAMILY.md` and #156.
+lecture repo has no work item in this plan beyond `FAMILY.md` and quantecon-theme.mystmd#156.
 
 ## Risks
 
@@ -195,13 +195,13 @@ lecture repo has no work item in this plan beyond `FAMILY.md` and #156.
 | --- | --- |
 | Three repos drift on the node contract | The contract is versioned in the plugins repo; nodes carry a `contract` version prop; the report theme pins the plugins version it renders. |
 | Copied scaffolds diverge (a fix like the snapshot-bot CI nudge applied in one repo only) | `FAMILY.md` lists the shared conventions; a quarterly diff of the four workflows. |
-| Dependabot load doubles (36 open alerts here today; the same Remix v1 chain) | Accepted; the `overrides` posture in `SECURITY.md` is copied; the RR7 migration (#28) clears the bulk in both repos. |
+| Dependabot load doubles (36 open alerts here today; the same Remix v1 chain) | Accepted; the `overrides` posture in `SECURITY.md` is copied; the RR7 migration (quantecon-theme.mystmd#28) clears the bulk in both repos. |
 | Hot contract churn during Phases 1–3 | Develop against a branch pin; `v0.x` tags with the report theme's releases; freeze the contract at the Phase 3 exit. |
 | Generic directive names collide with a future core directive (core wins silently) | Plain names now; documented alias fallback per family; a test that fails if `myst` ships a same-named directive. |
 | Charting-DSL scope creep in `datavis` | Option surface capped at what the compliance pages use; new options need a second consumer. |
 | Remix v1 constraints; RR7 later means two shells to migrate | Accepted; shells are thin and independently pinned, so the report theme can move first. |
 | esbuild deadlock during `prod:build` (known flake) | Retry; the copied CI already times out at 20 minutes. |
-| Directive validation too strict for edge cases (shared lectures across `lecture-dp`/`lecture-python.myst`, their issue #3) | Warn rather than error for provenance ambiguities; only missing data and count mismatches are errors. |
+| Directive validation too strict for edge cases (shared lectures across `lecture-dp`/`lecture-python.myst`, compliance-lecture-style#3) | Warn rather than error for provenance ambiguities; only missing data and count mismatches are errors. |
 
 ## Effort summary
 
@@ -218,11 +218,11 @@ lecture repo has no work item in this plan beyond `FAMILY.md` and #156.
 
 | Repo | Issue | Genre |
 | --- | --- | --- |
-| `quantecon-theme-report.mystmd` | [#2](https://github.com/QuantEcon/quantecon-theme-report.mystmd/issues/2) "Report theme — compliance variant — tracking", sub-issues #3–#10 (Phase 0 scaffold, Phase 0 data contract, 1b compliance plugin, 2 shell, 3 renderers, 3 card upgrades, 3 test harness, 4 first release) | long-lived tracker, `Project` type |
+| `quantecon-theme-report.mystmd` | [#2](https://github.com/QuantEcon/quantecon-theme-report.mystmd/issues/2) "Report theme — compliance variant — tracking", sub-issues quantecon-theme-report.mystmd#3 to quantecon-theme-report.mystmd#10 (Phase 0 scaffold, Phase 0 data contract, 1b compliance plugin, 2 shell, 3 renderers, 3 card upgrades, 3 test harness, 4 first release) | long-lived tracker, `Project` type |
 | `quantecon-theme-report.mystmd` | [#11](https://github.com/QuantEcon/quantecon-theme-report.mystmd/issues/11) "Dark and auto colour schemes for the report theme" | future feature request (D5) |
-| `quantecon-plugins.mystmd` | [#2](https://github.com/QuantEcon/quantecon-plugins.mystmd/issues/2) "datavis plugin family v1 — tracking", sub-issues #3–#7 (contract + schema, toolchain, tiles and bars, tables and lists, docs + v0.1.0) | long-lived tracker, `Project` type |
+| `quantecon-plugins.mystmd` | [#2](https://github.com/QuantEcon/quantecon-plugins.mystmd/issues/2) "datavis plugin family v1 — tracking", sub-issues quantecon-plugins.mystmd#3 to quantecon-plugins.mystmd#7 (contract + schema, toolchain, tiles and bars, tables and lists, docs + v0.1.0) | long-lived tracker, `Project` type |
 | `quantecon-plugins.mystmd` | [#8](https://github.com/QuantEcon/quantecon-plugins.mystmd/issues/8) "Extract or upstream the data family if community interest appears" | future (`discuss`) |
-| `compliance-lecture-style` | [#28](https://github.com/QuantEcon/compliance-lecture-style/issues/28) "Migrate the ledger to mystmd with the report theme — tracking", sub-issues #29–#34 (data contract + findings.csv, MyST TOC, directive emission, gate + runbook, native charts, deploy) | migration project (D6), `Project` type; build items gated on the report theme's Phase 1b exit |
+| `compliance-lecture-style` | [#28](https://github.com/QuantEcon/compliance-lecture-style/issues/28) "Migrate the ledger to mystmd with the report theme — tracking", sub-issues compliance-lecture-style#29 to compliance-lecture-style#34 (data contract + findings.csv, MyST TOC, directive emission, gate + runbook, native charts, deploy) | migration project (D6), `Project` type; build items gated on the report theme's Phase 1b exit |
 | `quantecon-theme.mystmd` | [#156](https://github.com/QuantEcon/quantecon-theme.mystmd/issues/156) move `git-metadata` to the plugins repo (D8); `FAMILY.md` as a small PR (Phase 0) | done / small |
 
-The two new repositories were created on 2026-09-02 with the QEP-2 label set and delete-branch-on-merge; each has an initial PR (#1) adding its README, and the report repo's PR also commits this design bundle under `docs/design-handoff-2026-09/`. The trackers are not on the projects dashboard until registered in `QuantEcon/status-projects` `projects.yml`; draft rows are in `workplan/projects-registry-rows.yml`.
+The two new repositories were created on 2026-09-02 with the QEP-2 label set and delete-branch-on-merge; each has an initial pull request adding its README, and the report repo's also commits this design bundle under `docs/design-handoff-2026-09/`. The trackers are not on the projects dashboard until registered in `QuantEcon/status-projects` `projects.yml`; draft rows are in `workplan/projects-registry-rows.yml`.

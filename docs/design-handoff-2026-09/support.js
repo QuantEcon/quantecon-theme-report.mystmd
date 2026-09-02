@@ -1,3 +1,10 @@
+// VENDORED DESIGN-REFERENCE RUNTIME — NOT PRODUCTION CODE.
+// Generated for the *.dc.html hi-fi references in this folder and kept as handed over on
+// 2026-09-01, apart from this header. When one of those pages is opened it loads React,
+// ReactDOM and (for JSX) Babel from https://unpkg.com at run time and evaluates the
+// page's inline component script with `new Function`. Use it only to view the references
+// locally; do not ship, import or reuse it, and do not expect it to work offline or in a
+// locked-down environment. The theme itself does not depend on it.
 // GENERATED from dc-runtime/src/*.ts — do not edit. Rebuild with `cd dc-runtime && bun run build`.
 "use strict";
 (() => {

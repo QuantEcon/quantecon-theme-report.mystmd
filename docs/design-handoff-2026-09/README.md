@@ -1,5 +1,19 @@
 # Project Specification: QuantEcon Compliance Theme (`quantecon-theme-compliance`)
 
+> **Status (2026-09-02).** This is the design brief as handed over on 2026-09-01, kept
+> unchanged as the record of what was proposed. The maintainer decisions in
+> [REVIEW.md](./REVIEW.md) §10 and the plan in [PLAN.md](./PLAN.md) supersede it wherever
+> the two differ. In particular the repository name and the architecture in §2 are
+> superseded: the theme is `quantecon-theme-report.mystmd`, a self-contained sibling of the
+> lecture theme rather than a layer on it or a package in a monorepo (decision D1); the
+> directives ship as two plugins, `datavis.mjs` from `quantecon-plugins.mystmd` and
+> `compliance.mjs` from this repository, emitting portable MyST nodes (D3, D7); and releases
+> are plain `vX.Y.Z` tags per repository (D2). The component specifications (§5), tokens
+> (§6), interactions (§7) and acceptance criteria (§9) remain the design reference; the data
+> contracts in §3 are amended by REVIEW §6. The `*.dc.html` references load React, ReactDOM
+> and Babel from unpkg when opened and evaluate their inline component script through
+> `support.js`; open them locally as design references only.
+
 A MyST web theme for QuantEcon compliance/audit reports (first consumer:
 [`QuantEcon/compliance-lecture-style`](https://github.com/QuantEcon/compliance-lecture-style)),
 built as a layer on the existing
@@ -34,6 +48,10 @@ than hard-coded inline styles.
    flow) is reused from the lecture theme, not rebuilt.
 
 ## 2. Architecture
+
+> **Superseded** by decision D1 (REVIEW.md §4 and §10): the report theme is a
+> self-contained sibling repository and no shared package is built. Kept as proposed,
+> for the record.
 
 Restructure `quantecon-theme.mystmd` into an npm-workspaces monorepo:
 

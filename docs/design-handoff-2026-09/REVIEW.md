@@ -1,12 +1,16 @@
 # Review — Compliance theme handover package
 
+> Written in `QuantEcon/quantecon-theme.mystmd`, the lecture theme repository, on
+> 2026-09-02, before this repository existed. Issue and pull-request numbers are
+> repository-qualified throughout for that reason.
+
 Reviewed 2026-09-02 against the live state of everything the package touches, then
 iterated twice with the maintainer: an adversarial pass on the repo structure and a
 packaging pass on the directives. Section 10 records the final decisions.
 
 | Source | State reviewed |
 | --- | --- |
-| This repo | `main` @ `47e37ed8` (v2.3.1 released 2026-08-26, plus #151) |
+| `QuantEcon/quantecon-theme.mystmd` (the lecture theme, where this review was written) | `main` @ `47e37ed8` (v2.3.1 released 2026-08-26, plus quantecon-theme.mystmd#151) |
 | QuantEcon `mystmd` fork (the local `myst` CLI) | `main` @ `12a8b26b`, v1.10.1 (qe-v10) |
 | `QuantEcon/compliance-lecture-style` | `main` as of 2026-09-01 (Jupyter Book 1, 348 lecture reports + 5 series pages) |
 | Upstream `jupyter-book/myst-theme` | `main` (monorepo: `packages/*` + `themes/book` + `themes/article`) |
@@ -164,12 +168,12 @@ second theme changes "one theme" but not "no packages".
 **What the shared package would cost.**
 
 - A whole-tree move of the lecture app during the cutover window, forcing every open PR
-  (#152, #144, #141, #155) to rebase.
+  (quantecon-theme.mystmd#152, quantecon-theme.mystmd#144, quantecon-theme.mystmd#141, quantecon-theme.mystmd#155) to rebase.
 - One lockfile: the report theme could not move to newer React or `@myst-theme/*` pins
   ahead of the lecture theme, which needs to stay boring for the all-or-nothing cutover
-  (#147).
+  (quantecon-theme.mystmd#147).
 - Every shared change tested against two visual suites; the React Router 7 migration
-  (#28) acquiring a third surface.
+  (quantecon-theme.mystmd#28) acquiring a third surface.
 - Divergence pressure: the two designs differ in type scale, palette and layout, so shared
   components would grow variant props, recreating the "one theme, many ifs" problem inside
   the package.
@@ -191,7 +195,7 @@ and plugins run only inside the mystmd engine, so the suffix says exactly what t
 target, and PLAN.md Phase 0 already records it as the convention (deliberately not the
 lectures' transitional `.myst` suffix).
 
-**Runner-up, for the record.** A sibling app inside this repo with the lecture app left
+**Runner-up, for the record.** A sibling app inside `quantecon-theme.mystmd` with the lecture app left
 at the root avoids the move and keeps one CI and one plugin home, at the price of an
 asymmetric tree, prefixed release tags for the second theme, and two long-lived
 trackers in one repo.
@@ -230,7 +234,7 @@ between `<!-- qe:NAME -->` markers (a 27-row ranked table per series, 348 score-
 tables). With directives the tooling emits one line per region, diffs shrink to the
 prose, and the CSV is the single source at build time as well as at generation time.
 `qestyle_check.py`'s gate keeps its role for the hand-written claims (their open issue
-#5 is exactly about those).
+compliance-lecture-style#5 is exactly about those).
 
 ## 7. Design and spec gaps
 
@@ -239,7 +243,7 @@ prose, and the CSV is the single source at build time as well as at generation t
   fixed container, `LoadingBar` and search from `@myst-theme/site`); nav links come from
   mystmd's `site.nav` (already in the manifest as `nav`) rather than being hardcoded.
 - **Sidebar.** Persistent at desktop (248px) and data-driven from the `series_nav` part;
-  a mobile drawer modelled on PR #144's Popover-API rebuild once it lands.
+  a mobile drawer modelled on PR quantecon-theme.mystmd#144's Popover-API rebuild once it lands.
 - **Dark mode (D5).** Light-only first version; the `@myst-theme` contrast toggle is
   hidden in the report shell and tokens are CSS custom properties so a dark and an
   auto (system) scheme are additive later. Filed as a future feature request in the
@@ -247,13 +251,13 @@ prose, and the CSV is the single source at build time as well as at generation t
 - **Tokens.** The `qec-` Tailwind namespace is fine as the *interface*; the source of
   truth is CSS custom properties on `:root`, mapped into Tailwind
   (`'qe-accent': 'rgb(var(--qe-accent) / <alpha-value>)'`). The lecture theme's Phase 3
-  (#89, seoul256 schemes) uses the same mechanism in its own repo; draft PR #155 there
+  (quantecon-theme.mystmd#89, seoul256 schemes) uses the same mechanism in its own repo; draft PR quantecon-theme.mystmd#155 there
   is the reference for moving lecture typography into a stylesheet and fixed the silent
   `typography` spread bug in `tailwind.config.js`.
 - **Fonts.** `@fontsource-variable/source-serif-4` (5.3.0) exists; IBM Plex Mono is
   static-only (`@fontsource/ibm-plex-mono`, weights 400/500/600), which suits the spec.
   Both go through the `app/links.ts` route so `scripts/relative-css-asset-urls.mjs`
-  rewrites their `url()`s (the #138/#150 lesson). The inlined critical CSS and the FOUC
+  rewrites their `url()`s (the quantecon-theme.mystmd#138 and quantecon-theme.mystmd#150 lesson). The inlined critical CSS and the FOUC
   guard carry the report values: serif fallback stack, body `#faf9f6`.
 - **YAML bodies.** `qe-wins`, `qe-finding`, `qe-issues`, `qe-method-stats` take YAML
   lists in the body. Besides the no-dependency constraint (§1), YAML-in-body is a
@@ -273,8 +277,8 @@ prose, and the CSV is the single source at build time as well as at generation t
   every report fixture page. The 1% pixel budget would not catch a 20px overflow.
 - **Static export path.** The compliance site deploys to GitHub Pages as a static build.
   Test with a real `myst build --html`, not only the `myst start` harness; that is where
-  #138 and #150 hid.
-- **Plugin registration in §2's `myst.yml`** uses bare filenames; per the #93 decision
+  quantecon-theme.mystmd#138 and quantecon-theme.mystmd#150 hid.
+- **Plugin registration in §2's `myst.yml`** uses bare filenames; per the quantecon-theme.mystmd#93 decision
   it should be pinned URLs for all three plugins, including `git-metadata.mjs` (the
   design footer shows "Last changed", so the report site wants it too).
 - **Theme options.** Declare the report theme's `site.options` (e.g. `title_suffix`,
@@ -296,7 +300,7 @@ Measured to test the shared-package idea; the conclusion is in §4. Line counts 
 | `ComputeToolbarSlot.tsx` | 25 | no | Thebe |
 | `toolbar/DownloadButton.tsx` | 78 | no | Report site has no downloads |
 | `PageHeaderHistory.tsx`, `PageProvider.tsx` | 231 | date formatter | Footer shows a date, not a changelog |
-| `ContentsSidebar.tsx` | 158 | mobile drawer idea | Desktop layout differs; wait for #144 |
+| `ContentsSidebar.tsx` | 158 | mobile drawer idea | Desktop layout differs; wait for quantecon-theme.mystmd#144 |
 | `Outline.tsx`, `hooks/useScroll.tsx` | 102 | no | Design has no "On this page" outline |
 | `ProjectFrontmatter.tsx`, `SiteFooter.tsx` | 110 | no | Blue-divider header/footer are the lecture look |
 | `Page.tsx`, `PageContent.tsx`, `NavigationAndArticleWrapper.tsx` | 210 | no | Layout + Thebe providers |
@@ -354,7 +358,7 @@ rabbit hole: the option surface is capped at what the compliance pages use.
 | Family | Contents | Audience | Home | Consumed by |
 | --- | --- | --- | --- | --- |
 | Data presentation | the eight primitives; portable AST only | any mystmd project publishing reports or dashboards | `quantecon-plugins.mystmd`, bundle `datavis.mjs` | compliance repo now; status/audit repos later; the lecture theme if ever wanted |
-| Repository metadata | `git-metadata` transform | any project, but rendering is theme-coupled today | stays here for now, tracked in #156 | lecture repos, compliance repo |
+| Repository metadata | `git-metadata` transform | any project, but rendering is theme-coupled today | stays in `quantecon-theme.mystmd` for now, tracked in quantecon-theme.mystmd#156 | lecture repos, compliance repo |
 | Compliance rubric | the `qe-*` wrappers: schemas, bands, priority, verified counts, finding card | QuantEcon `compliance-*` repos only | beside the report theme, bundle `compliance.mjs` | compliance repo |
 
 **Share the contract, not the code.** The compliance wrappers emit the same node shapes
@@ -370,7 +374,7 @@ bundle step and docs, no Remix and no Playwright; a contract document the portab
 decision needs anyway; and the discipline that generic code never imports compliance
 code. The risk is churn while the contract is hot during the first build; the mitigation
 is developing against a branch and cutting `v0.x` tags alongside the report theme's
-releases. It is also exactly the trigger the #93 plugin-home decision named: a second,
+releases. It is also exactly the trigger the quantecon-theme.mystmd#93 plugin-home decision named: a second,
 non-theme-coupled plugin now exists.
 
 **Naming.** `quantecon-plugins.mystmd` follows the family pattern
@@ -386,13 +390,13 @@ release-asset URLs already pinned keep working because releases stay.
 
 | # | Decision | Outcome |
 | --- | --- | --- |
-| D1 | Structure | **Sibling repo `quantecon-theme-report.mystmd`**, self-contained, scaffold copied from this repo; compliance is its first variant. No shared package. The `.mystmd` suffix stays: it marks tooling for the mystmd engine. |
+| D1 | Structure | **Sibling repo `quantecon-theme-report.mystmd`**, self-contained, scaffold copied from `quantecon-theme.mystmd`; compliance is its first variant. No shared package. The `.mystmd` suffix stays: it marks tooling for the mystmd engine. |
 | D2 | Releases | **Plain `vX.Y.Z` per repo.** One zip each; `quantecon-theme.zip` unchanged, `quantecon-theme-report.zip` new. Plugin bundles as release assets of the repo that owns them. |
 | D3 | AST contract | **Portable, no custom node types.** Contract + JSON schema in the plugins repo; compliance wrappers emit the same nodes with tone hints. |
 | D4 | Issue/PR status | **`findings.csv`** written by the pass tooling, shown "as of ⟨date⟩". |
 | D5 | Dark mode | **Light-only first version.** Dark and auto schemes are a future feature request, filed in the report repo, not in this work plan. |
 | D6 | Content-repo migration | **Separate project in `compliance-lecture-style`**, opened once the plugins and theme are available. |
 | D7 | Generic extension | **Plugins repo now: `quantecon-plugins.mystmd`**, bundle `datavis.mjs` first; refactor to a general project if community interest appears. |
-| D8 | `git-metadata` home | **Stays here.** Tracking issue #156 captures the move to the plugins repo as a standalone plugin. |
+| D8 | `git-metadata` home | **Stays in `quantecon-theme.mystmd`.** Tracking issue quantecon-theme.mystmd#156 captures the move to the plugins repo as a standalone plugin. |
 
 The plan that follows from these is in [PLAN.md](./PLAN.md).
