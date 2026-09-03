@@ -1,0 +1,42 @@
+/* Source Sans 3 is self-hosted and imported from app/links.ts, not @import-ed
+   here: Tailwind does not rebase url() inside an @import-ed stylesheet, so the
+   font paths would resolve relative to this file's *output* and 404. */
+@import '@myst-theme/styles';
+
+@layer base {
+  .grid-gap {
+    @apply gap-1 md:gap-2 xl:gap-3 2xl:gap-4;
+  }
+  .subgrid-gap {
+    @apply gap-x-1 md:gap-x-2 xl:gap-x-3 2xl:gap-x-4;
+  }
+
+  /* The centred content grid. Its column definitions must stay in step with
+     CRITICAL_CSS in app/root.tsx, which restates them inline for the first
+     paint (see tests/visual/fouc.spec.ts). */
+  .simple-center-grid {
+    @apply grid content-start grid-cols-simple-sm xl:grid-cols-simple-xl;
+  }
+
+  /* Ensure direct children in the grid don't have unwanted margins */
+  .simple-center-grid > * {
+    margin-top: 0 !important;
+    @apply col-body;
+  }
+
+  .simple-center-grid > .col-margin {
+    @apply hidden xl:block;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  a {
+    @apply no-underline;
+  }
+
+  a:hover {
+    @apply underline;
+  }
+}

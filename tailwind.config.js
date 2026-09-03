@@ -1,0 +1,88 @@
+const mystTheme = require('@myst-theme/styles');
+
+/**
+ * Tailwind configuration for the QuantEcon report theme.
+ *
+ * Phase 0 carries across the lecture theme's grid system, font stack and the
+ * QuantEcon colour names the shared components expect. The report-specific
+ * tokens — the tone scales the data-presentation primitives and compliance
+ * cards are specified against — arrive with the Phase 2 shell (#6).
+ */
+module.exports = {
+  darkMode: 'class',
+  content: mystTheme.content,
+  theme: {
+    extend: {
+      ...mystTheme.themeExtensions,
+      typography: {
+        ...mystTheme.themeExtensions.typography,
+        DEFAULT: {
+          css: {
+            fontSize: '1.125rem',
+            fontWeight: '400',
+            a: {
+              color: 'rgb(0 73 121 / 0.8)',
+              fontWeight: 'inherit',
+              textDecoration: 'none',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            },
+          },
+        },
+        invert: {
+          css: {
+            a: {
+              color: '#ffffff',
+              fontWeight: '600',
+            },
+          },
+        },
+      },
+      gridTemplateColumns: {
+        ...mystTheme.themeExtensions.gridTemplateColumns,
+        'simple-sm':
+          '[screen-start] 1fr [body-start] minmax(300px, 800px) [body-end] 1fr [screen-end]',
+        'simple-xl':
+          '[screen-start] 1fr 200px 20px [body-start] 800px [body-end] 20px [margin-start] 200px [margin-end] 1fr [screen-end]', // Two-column layout at large screens
+      },
+      gridColumn: {
+        ...mystTheme.themeExtensions.gridColumn,
+        screen: 'screen',
+        'screen-start': 'screen-start',
+        'screen-end': 'screen-end',
+        body: 'body',
+        'body-start': 'body-start',
+        'body-end': 'body-end',
+        margin: 'margin',
+        'margin-start': 'margin-start',
+        'margin-end': 'margin-end',
+        'col-screen': 'screen-start / screen-end',
+        'col-body': ' body-start / body-end',
+        'col-margin': 'margin-start / margin-end',
+        'gutter-left': 'screen-start / body-start',
+        'gutter-right': 'margin-end / screen-end',
+      },
+      colors: {
+        'qepage-dark': '#222',
+        'qetoolbar-light': '#efefef',
+        'qetoolbar-dark': '#444',
+        'qetoolbar-border': '#ccc',
+        'qetext-light': '#444444',
+        'qetext-dark': '#fff',
+        'qetext-dark-muted': '#a6a6a6',
+        'qeborder-blue': 'rgb(0 114 188)',
+      },
+      fontFamily: {
+        // "Source Sans 3 Variable" is the family name declared by
+        // @fontsource-variable/source-sans-3, self-hosted via app/links.ts.
+        // Plain "Source Sans 3" comes next so a locally installed copy is used
+        // while the webfont swaps in, or if it fails to load. Must stay in step
+        // with CRITICAL_CSS in app/root.tsx.
+        sans: ['"Source Sans 3 Variable"', '"Source Sans 3"', 'sans-serif'],
+      },
+    },
+  },
+  plugins: [require('@tailwindcss/typography')],
+  safelist: mystTheme.safeList,
+};

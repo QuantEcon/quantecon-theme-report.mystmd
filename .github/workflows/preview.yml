@@ -1,0 +1,140 @@
+# PR preview on GitHub Pages — self-contained (GITHUB_TOKEN only, no org secrets).
+#
+# Builds a site with the PR's theme via a static `myst build --html` — the
+# production export path the Playwright harness (live `myst start`) never
+# exercises — and deploys it to the gh-pages branch under pr-preview/pr-<n>/.
+# A sticky PR comment links the preview; closing the PR tears the subdirectory
+# down.
+#
+# Which content gets built (this is the adaptation from the lecture theme, which
+# always builds QuantEcon/lecture-python-programming):
+#
+#   * Preferred — the `mystmd` branch of QuantEcon/compliance-lecture-style, the
+#     ledger this theme is built for. That branch does not exist yet; the D6
+#     project in the compliance repo (compliance-lecture-style#28) creates it as
+#     part of migrating the ledger off Jupyter Book 1.x.
+#   * Fallback, used automatically until then — the local visual fixture in
+#     tests/visual/fixture. It is prose-only, so the preview proves the static
+#     build path works but says nothing about report rendering.
+#
+# The branch is probed with `git ls-remote` on every run, so the day the branch
+# appears the preview switches to real content with no change here. When it has
+# been there a while, delete the fallback and let a missing branch fail.
+name: PR Preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+concurrency:
+  group: pr-preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write # push the rendered site to the gh-pages branch
+  pull-requests: write # sticky preview-link comment
+
+env:
+  CONTENT_REPO: QuantEcon/compliance-lecture-style
+  CONTENT_REF: mystmd
+  CONTENT_DIR: lectures
+
+jobs:
+  preview:
+    name: Build & deploy preview (gh-pages)
+    # Same-repo PRs only, like update-snapshots.yml (fork PRs get a read-only
+    # GITHUB_TOKEN and could not deploy anyway).
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        if: github.event.action != 'closed'
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        if: github.event.action != 'closed'
+        run: npm ci
+      - name: Install mystmd CLI
+        if: github.event.action != 'closed'
+        run: npm install -g mystmd
+      # Builds the candidate theme from this branch into
+      # .deploy/quantecon-theme-report.
+      - name: Build theme template
+        if: github.event.action != 'closed'
+        run: make build-theme
+
+      - name: Does the compliance content branch exist yet?
+        id: content
+        if: github.event.action != 'closed'
+        run: |
+          if git ls-remote --exit-code --heads \
+               "https://github.com/${CONTENT_REPO}.git" "${CONTENT_REF}" >/dev/null 2>&1; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "Building the preview from ${CONTENT_REPO}@${CONTENT_REF}."
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::${CONTENT_REPO}@${CONTENT_REF} does not exist yet — building the local visual fixture instead. See compliance-lecture-style#28."
+          fi
+
+      - name: Checkout compliance content (full history for git metadata)
+        if: github.event.action != 'closed' && steps.content.outputs.available == 'true'
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ env.CONTENT_REPO }}
+          ref: ${{ env.CONTENT_REF }}
+          path: preview-content
+          fetch-depth: 0
+
+      - name: Point the content at the PR theme
+        id: prepare
+        if: github.event.action != 'closed'
+        env:
+          THEME_DIR: ${{ github.workspace }}/.deploy/quantecon-theme-report
+          AVAILABLE: ${{ steps.content.outputs.available }}
+        run: |
+          set -euo pipefail
+          if [ "$AVAILABLE" = "true" ]; then
+            DIR="preview-content/${CONTENT_DIR}"
+            cd "$DIR"
+            # The mystmd branch is expected to be a native MyST project. If it
+            # is still a legacy Jupyter Book, `myst init` performs the upgrade;
+            # with piped (non-TTY) stdin it exits non-zero on its follow-up
+            # "run myst start now?" prompt after writing the config, so tolerate
+            # that and assert the config exists either way.
+            if [ ! -f myst.yml ]; then
+              printf 'y\nn\n' | myst init || true
+            fi
+            test -f myst.yml
+            yq -i '.site.template = env(THEME_DIR)' myst.yml
+          else
+            # Fallback: the prose-only visual fixture, rendered exactly as
+            # tests/visual/serve.sh renders it.
+            DIR="preview-content/fixture"
+            mkdir -p preview-content
+            cp -r tests/visual/fixture "$DIR"
+            cd "$DIR"
+            esc=$(printf '%s' "$THEME_DIR" | sed 's/[\\&|]/\\&/g')
+            sed "s|__THEME__|${esc}|" myst.yml.in > myst.yml
+          fi
+          cd "$GITHUB_WORKSPACE"
+          echo "dir=$DIR" >> "$GITHUB_OUTPUT"
+
+      - name: Build static site
+        if: github.event.action != 'closed'
+        working-directory: ${{ steps.prepare.outputs.dir }}
+        env:
+          # Must match the Pages subpath the deploy step publishes to.
+          BASE_URL: /quantecon-theme-report.mystmd/pr-preview/pr-${{ github.event.number }}
+        run: myst build --html
+
+      # auto mode: deploys on opened/reopened/synchronize, removes the
+      # pr-preview/pr-<n>/ subdirectory on closed, and maintains the sticky
+      # comment. Root .nojekyll on gh-pages (seeded once) keeps Pages from
+      # eating the underscore-prefixed asset paths (build/_assets/...).
+      - name: Deploy / teardown preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ${{ steps.prepare.outputs.dir || 'preview-content' }}/_build/html
+          action: auto
