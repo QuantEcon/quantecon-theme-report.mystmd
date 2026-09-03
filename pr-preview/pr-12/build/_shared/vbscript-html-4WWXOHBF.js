@@ -1,0 +1,1 @@
+import{b as t}from"/quantecon-theme-report.mystmd/pr-preview/pr-12/build/_shared/chunk-32A6EMWD.js";var i=t((a,n)=>{function e(s){return{name:"VBScript in HTML",subLanguage:"xml",contains:[{begin:"<%",end:"%>",subLanguage:"vbscript"}]}}n.exports=e});export default i();

@@ -1,0 +1,1 @@
+import{b as e}from"/quantecon-theme-report.mystmd/pr-preview/pr-12/build/_shared/chunk-32A6EMWD.js";var r=e((i,a)=>{a.exports=p;p.displayName="hpkp";p.aliases=[];function p(t){t.languages.hpkp={directive:{pattern:/\b(?:includeSubDomains|max-age|pin-sha256|preload|report-to|report-uri|strict)(?=[\s;=]|$)/i,alias:"property"},operator:/=/,punctuation:/;/}}});export{r as a};
