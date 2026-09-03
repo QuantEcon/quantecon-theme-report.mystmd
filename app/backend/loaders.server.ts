@@ -110,13 +110,33 @@ export async function getPage(
   };
 }
 
-/*
- * The lecture theme also exports loaders for `/objects.inv`, `/myst.xref.json`
- * and `/myst.search.json`. They are dropped here with the routes that serve
- * them: cross-reference and search wiring belongs with the Phase 2 shell (#6),
- * and `getMystSearchJson`'s type comes from `@myst-theme/search`, which is not
- * a direct dependency of this theme.
- */
+export async function getObjectsInv(): Promise<Buffer | null> {
+  const url = updateLink("/objects.inv");
+  const response = await fetch(url).catch(() => null);
+  if (!response || response.status === 404) return null;
+  return response.buffer();
+}
+
+export async function getMystXrefJson(): Promise<Record<string, any> | null> {
+  const url = updateLink("/myst.xref.json");
+  const response = await fetch(url).catch(() => null);
+  if (!response || response.status === 404) return null;
+  const xrefs = await response.json();
+  xrefs.references?.forEach((ref: any) => {
+    ref.data = ref.data?.replace(/^\/content/, "");
+  });
+  return xrefs;
+}
+
+// Typed loosely rather than as `MystSearchIndex`: that type lives in
+// `@myst-theme/search`, which this theme does not depend on directly. The
+// payload is passed straight through to the client as JSON.
+export async function getMystSearchJson(): Promise<Record<string, any> | null> {
+  const url = updateLink("/myst.search.json");
+  const response = await fetch(url).catch(() => null);
+  if (!response || response.status === 404) return null;
+  return await response.json();
+}
 
 export async function getFavicon(): Promise<{
   contentType: string | null;

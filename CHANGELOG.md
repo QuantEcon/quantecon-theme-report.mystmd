@@ -31,9 +31,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `template/` and `template.yml`, both version fields stamped from
     `package.json`.
   - The Remix application shell — `app/root.tsx` with the inlined critical CSS,
-    the index and catch-all routes, the MyST content loaders, Tailwind and the
-    self-hosted Source Sans 3 and KaTeX stylesheets. It renders article content
-    in the centred grid and nothing more; the report shell is
+    the index and catch-all routes, the routes a static `myst build --html`
+    crawls (per-page `.json`, `sitemap.xml`, `sitemap_style.xsl`,
+    `objects.inv`), the MyST content loaders, Tailwind and the self-hosted
+    Source Sans 3 and KaTeX stylesheets. It renders article content in the
+    centred grid and nothing more; the report shell is
     [#6](https://github.com/QuantEcon/quantecon-theme-report.mystmd/issues/6).
   - The Playwright harness: the prose-only fixture in `tests/visual/fixture`,
     the WebKit FOUC guard, and structural rendering tests standing in for pixel
