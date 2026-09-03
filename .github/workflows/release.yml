@@ -1,0 +1,142 @@
+name: Release
+
+# Tag-triggered build → zip → GitHub Release pipeline, carried across from the
+# lecture theme (quantecon-theme.mystmd) with the Phase 0 scaffold.
+#
+# Pushing a `vX.Y.Z` tag builds the theme, assembles the same bundle that
+# `make build-theme` ships, and publishes a GitHub Release for the tag with
+# **two** assets attached:
+#
+#   quantecon-theme-report.zip   the theme, pinned from `site.template`
+#   compliance.mjs               the qe-* report directives, pinned from
+#                                `project.plugins`
+#
+# Consumers pin both by release URL:
+#   …/releases/download/vX.Y.Z/quantecon-theme-report.zip
+#   …/releases/download/vX.Y.Z/compliance.mjs
+#
+# The zip contains:
+#   build/, public/                 (from `npm run prod:build`)
+#   template.yml                    (version stamped from package.json)
+#   server.js, package.json, LICENSE, README.md, thumbnail.png
+#                                   (from template/, with VERSION substituted)
+#   package-lock.json               (generated; node_modules is NOT shipped)
+#   CHANGELOG.md
+#
+# Guards (both fail the release):
+#   - the tag must match `package.json` `version`
+#   - CHANGELOG.md must have a `## [X.Y.Z]` section — it becomes the release notes
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & publish release assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Verify tag matches package.json version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version v$VERSION — bump package.json (see CONTRIBUTING.md \"Releases\") and re-tag."
+            exit 1
+          fi
+
+      - name: Extract release notes from CHANGELOG.md
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          # Second stage: unwrap hard-wrapped lines. CHANGELOG.md is wrapped for
+          # the repo view, but GitHub renders release bodies like comments — a
+          # single newline becomes <br> — so wrapped source shows as narrow
+          # ragged lines. Joins indented continuation lines into their bullet
+          # and consecutive "> " lines into one; fenced code blocks and nested
+          # bullets pass through untouched.
+          awk -v ver="$VERSION" '
+            index($0, "## [" ver "]") == 1 { flag = 1; next }
+            /^## /                         { flag = 0 }
+            flag
+          ' CHANGELOG.md | awk '
+            function flush() { if (have) { print buf; have = 0 } }
+            /^```/  { flush(); print; infence = !infence; next }
+            infence { print; next }
+            /^ {2,}[^ ]/ && have && $0 !~ /^ +[-*] / {
+              line = $0; sub(/^ +/, "", line); buf = buf " " line; next
+            }
+            /^> [^ ]/ && have && buf ~ /^> / {
+              line = $0; sub(/^> /, "", line); buf = buf " " line; next
+            }
+            { flush(); buf = $0; have = 1 }
+            END { flush() }
+          ' > release-notes.md
+          if ! grep -q '[^[:space:]]' release-notes.md; then
+            echo "::error::CHANGELOG.md has no \"## [$VERSION]\" section — add the curated entry (see CONTRIBUTING.md \"Releases\") and re-tag."
+            exit 1
+          fi
+
+      - run: npm ci
+      - run: npm run compile
+      # Cheap but load-bearing: the unit suite guards the version stamping this
+      # job performs below, and this is the only build that produces the
+      # published artifact.
+      - run: npm run test:unit
+      - name: Build
+        # esbuild occasionally deadlocks (a known flake in the lecture theme);
+        # time out fast so the run can simply be retried.
+        timeout-minutes: 20
+        run: npm run prod:build
+
+      - name: Assemble theme bundle and zip
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          DIST=dist/quantecon-theme-report
+          mkdir -p "$DIST"
+          find template -type f -exec cp {} "$DIST" \;
+          cp -r public "$DIST/public"
+          cp -r build "$DIST/build"
+          cp CHANGELOG.md "$DIST/CHANGELOG.md"
+          # Stamp both version fields from package.json so the shipped bundle
+          # cannot drift.
+          sed -i "s/VERSION/$VERSION/g" "$DIST/package.json"
+          sed -E "s/^version: .*/version: $VERSION/" template.yml > "$DIST/template.yml"
+          # Lockfile for reproducible consumer installs, without shipping node_modules.
+          (cd "$DIST" && npm install --package-lock-only)
+          (cd dist && zip -r ../quantecon-theme-report.zip quantecon-theme-report)
+
+      # The second asset. `plugins/compliance.mjs` is built by Phase 1b
+      # (QuantEcon/quantecon-theme-report.mystmd#5) and does not exist yet, so
+      # this job must not fail on its absence — but it must say so loudly, since
+      # a release that silently drops the plugin would leave every consumer
+      # pinning a 404. Once #5 lands this step becomes a hard requirement:
+      # delete the `else` branch and let a missing bundle fail the release.
+      - name: Check for the compliance plugin bundle
+        id: plugin
+        run: |
+          if [ -f plugins/compliance.mjs ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::plugins/compliance.mjs not found — publishing the theme zip only. This is expected until Phase 1b (#5) builds the plugin; after that, a missing bundle means the build step was skipped."
+          fi
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          body_path: release-notes.md
+          # Both assets. `fail_on_unmatched_files` stays false while
+          # plugins/compliance.mjs is still to be written (#5) — the step above
+          # is what reports its absence. Flip it to true with that `else` branch.
+          fail_on_unmatched_files: false
+          files: |
+            quantecon-theme-report.zip
+            plugins/compliance.mjs

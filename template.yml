@@ -1,0 +1,28 @@
+jtex: v1
+title: QuantEcon Report Theme
+description: A dedicated theme for QuantEcon compliance, audit and status report sites
+version: 0.1.0
+license: MIT
+source: https://github.com/QuantEcon/quantecon-theme-report.mystmd
+thumbnail: ./thumbnail.png
+authors:
+  # `name` as an object, not a string: mystmd otherwise tries to split an
+  # organisation name into given/family and warns on every build.
+  - name:
+      literal: QuantEcon
+    website: https://quantecon.org
+tags:
+  - report
+  - compliance
+parts:
+  - id: footer
+    description: The site wide footer
+build:
+  install: npm install
+  start: npm run start
+files:
+  - server.js
+  - package.json
+  - package-lock.json
+  - public/**/*
+  - build/**/*

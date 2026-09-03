@@ -1,0 +1,19 @@
+# Template for the visual-regression fixture project.
+# `serve.sh` copies this to `myst.yml`, substituting __THEME__ with the theme
+# under test (a local build directory, or a release zip URL).
+#
+# Phase 0 placeholder: prose only. The Phase 3 harness (#9) replaces this with
+# the sample CSVs and the five report pages the data contract (#4) describes,
+# and pins `datavis.mjs` and `compliance.mjs` under `project.plugins`.
+version: 1
+project:
+  title: QuantEcon Report Theme — Visual Fixture
+  github: https://github.com/QuantEcon/quantecon-theme-report.mystmd
+  toc:
+    - file: intro.md
+    - file: series.md
+site:
+  title: QE Report Theme Visual Fixture
+  template: __THEME__
+  options:
+    logo_text: QuantEcon Report Fixture

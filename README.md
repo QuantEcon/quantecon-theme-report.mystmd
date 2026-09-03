@@ -15,7 +15,7 @@ repositories and from the Sphinx / `myst-parser` world.
 
 ## Status
 
-**Planning complete (2026-09-02); build not started.** Work hangs off the `Project`-typed
+**Planning complete (2026-09-02); Phase 0 scaffold in progress.** Work hangs off the `Project`-typed
 tracker [#2](https://github.com/QuantEcon/quantecon-theme-report.mystmd/issues/2); its
 sub-issues are the phases. Dark and auto colour schemes are a future request,
 [#11](https://github.com/QuantEcon/quantecon-theme-report.mystmd/issues/11). The generic
@@ -56,6 +56,22 @@ The generic data-presentation directives those wrappers build on ship separately
   a missing file or a typed count that disagrees with the data fails a `--strict` build.
 - **Self-contained.** No shared package with the lecture theme; the family is held
   together by naming, copied scaffolding and a conventions document.
+
+## Development
+
+```sh
+npm ci               # package-lock.json is committed
+npm run compile      # tsc --noEmit
+npm run prod:build   # Tailwind + Remix + asset-URL rewrite
+make build-zip       # the release-equivalent bundle, in .deploy/
+```
+
+[`CONTRIBUTING.md`](./CONTRIBUTING.md) covers the scripts, the test harness and the
+release flow; [`SECURITY.md`](./SECURITY.md) covers the Remix v1 pin and the dependency
+`overrides` posture. The build, test and release machinery was copied from the lecture
+theme and is **owned here** — a fix in one repository does not reach the other. The
+conventions the two are meant to keep in step will be written down in the lecture
+theme's `FAMILY.md` and linked from here once that lands.
 
 ## License
 
