@@ -1,1 +1,0 @@
-import{b as u}from"/quantecon-theme-report.mystmd/pr-preview/pr-12/build/_shared/chunk-32A6EMWD.js";var a=u((g,e)=>{function r(n){return{name:"ERB",subLanguage:"xml",contains:[n.COMMENT("<%#","%>"),{begin:"<%[%=-]?",end:"[%-]?%>",subLanguage:"ruby",excludeBegin:!0,excludeEnd:!0}]}}e.exports=r});export default a();

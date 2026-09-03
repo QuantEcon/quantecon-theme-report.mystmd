@@ -1,1 +1,0 @@
-import{b as e}from"/quantecon-theme-report.mystmd/pr-preview/pr-12/build/_shared/chunk-32A6EMWD.js";var s=e((r,a)=>{function n(t){return{name:"Node REPL",contains:[{className:"meta",starts:{end:/ |$/,starts:{end:"$",subLanguage:"javascript"}},variants:[{begin:/^>(?=[ ]|$)/},{begin:/^\.\.\.(?=[ ]|$)/}]}]}}a.exports=n});export default s();

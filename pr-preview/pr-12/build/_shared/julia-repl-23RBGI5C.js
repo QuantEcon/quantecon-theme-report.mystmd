@@ -1,1 +1,0 @@
-import{b as e}from"/quantecon-theme-report.mystmd/pr-preview/pr-12/build/_shared/chunk-32A6EMWD.js";var l=e((t,a)=>{function s(n){return{name:"Julia REPL",contains:[{className:"meta",begin:/^julia>/,relevance:10,starts:{end:/^(?![ ]{6})/,subLanguage:"julia"},aliases:["jldoctest"]}]}}a.exports=s});export default l();

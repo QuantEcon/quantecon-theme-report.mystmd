@@ -1,1 +1,0 @@
-import{b as n}from"/quantecon-theme-report.mystmd/pr-preview/pr-12/build/_shared/chunk-32A6EMWD.js";var a=n((t,e)=>{function s(r){return{name:"Clojure REPL",contains:[{className:"meta",begin:/^([\w.-]+|\s*#_)?=>/,starts:{end:/$/,subLanguage:"clojure"}}]}}e.exports=s});export default a();
