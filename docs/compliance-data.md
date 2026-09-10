@@ -77,7 +77,7 @@ Every "nothing here" in those files is a **missing row**, and a missing row is a
 
 **The rule universe has three tiers and no CSV distinguishes them: 56 titled, 41 checked, 35
 with hits.** Any "rules checked" figure the report states from the CSVs alone will be 35 or 56
-and wrong. See *Open questions*, item 1.
+and wrong. See *Open questions*, item 2.
 
 ## The key is `(series, lecture)`, never `lecture`
 
@@ -147,7 +147,7 @@ marks a rule specified in the QuantEcon manual style guide but not yet encoded i
 | `snapshot.json` | — | `n_lectures`, `n_rules_checked`, `per_series`, and the pinned commit and date per series |
 | `fig_line_widths.csv` | 27 | `key, kind, calls, lectures`. Not named in the brief; no designed region needs it |
 
-**`share_pct` is fully derived**, `round(100 × lectures_affected / corpus_size, 1)`, and the
+**`share_pct` is fully derived**, `round(100 * lectures_affected / corpus_size, 1)`, and the
 identity holds for all 70 rows. The plugin should **trust the value and assert the identity**,
 failing the build on a mismatch, rather than recompute — recomputing invites a rounding
 divergence between Python and JavaScript that would put a different number on the page than in
@@ -213,7 +213,7 @@ previously good value. `0`, `-`, `N/A`, `TBD` and `—` are all rejected by the 
 roughly quarterly. Recommended: render the date always; above 90 days old, render an amber note
 on the section as a whole and drop the state badges to neutral rather than the confident
 green and purple; older than the previous period's pin, or absent, and `qestyle_check.py`
-fails. A card asserting MERGED from two passes ago is worse than no card.
+fails. A card asserting `merged` from two passes ago is worse than no card.
 
 **Where the network step goes.** Writing this file needs a GitHub call, which the pass did not
 previously make. It belongs as its own step in `UPDATE.md` after the scan and before the
