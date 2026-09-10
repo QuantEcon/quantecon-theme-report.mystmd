@@ -223,9 +223,21 @@ rather than blocking the pass.
 ## The directive syntax sheet
 
 The compliance wrappers take the container-and-item form, as a stated exception to the datavis
-family rule, and **the gated form wherever a card body may hold a `code-cell`**. Both are
-specified in `CONTRACT.md` under *Classed cards and grids*; the gated form is specified under
-*Gated containers* and follows `qe-admon-001`, the ledger's own rule for executable code.
+family rule. **Every container offers two forms and both are supported**: nested in one fence,
+or gated as `{qe-…-start}` … `{qe-…-end}`. Either carries a `code-cell` — verified with a real
+kernel, at any nesting depth — so the choice is about editing rather than execution.
+
+Reach for the gated form when a card body holds executable code, following `qe-admon-001`, and
+for any long or often-edited card set. The reason is one asymmetry: **a mis-nested container
+exits 0 and takes the rest of the page with it.** Write the container and its item at the same
+colon depth and the parser pairs the first closing marker with the inner directive; the card
+renders, the outer closing marker is left loose, and every line after it is swallowed into a
+`code` node, with no error and no warning under `--strict`. An unclosed gate exits 1, named and
+located.
+
+Keep the nested form for a set of prose cards. It reads better, keeps the set in one fence, and
+is the only form where the container can reject a bad item with a line number. Both are
+specified in `CONTRACT.md` under *Classed cards and grids* and *The two container forms*.
 
 | Directive | Argument | Options | Body | Data read from |
 | --- | --- | --- | --- | --- |
