@@ -79,6 +79,18 @@ Every "nothing here" in those files is a **missing row**, and a missing row is a
 with hits.** Any "rules checked" figure the report states from the CSVs alone will be 35 or 56
 and wrong. See *Open questions*, item 1.
 
+## The key is `(series, lecture)`, never `lecture`
+
+`lecture` is a markdown file stem and it is **not unique**: 348 rows carry 281 distinct stems,
+and 57 stems occur in more than one series, covering 124 rows. `amss`, `calvo` and `kalman_2`
+each exist three or four times over. Any lookup, join or filter keyed on `lecture` alone
+silently merges lectures from different series.
+
+Two of the five series names contain a dot — `lecture-python.myst` and
+`lecture-python-advanced.myst` — so a `series` value must never be split on `.` or treated as a
+filename stem. Mixed case is used in stems (`BCG_complete_mkts`), so a case-insensitive index is
+also unsafe.
+
 ## The files
 
 Row counts are the 2026-08 pass.
@@ -92,9 +104,20 @@ Row counts are the 2026-08 pass.
 | `series_summary.csv` | 6 | Five series plus a `TOTAL` row. Drives the series pages |
 
 Columns of both score files: `series, lecture, writing, math, code, jax, figures, references,
-links, admonitions, overall, priority`. **The `jax` column is not in the design brief** and must
-be handled: it is `out-of-scope` in all 348 rows today. `priority` is the closed set `HIGH`,
-`MEDIUM`, `LOW`, `NONE`.
+links, admonitions, overall, priority`. `priority` is the closed set `HIGH`, `MEDIUM`, `LOW`,
+`NONE`.
+
+**The `jax` column is not in the design brief**, and it is a column-level fact rather than a row
+level one: `out-of-scope` in all 348 rows, because the seven `qe-jax-*` rules target a
+repository outside this corpus. Render it once — "JAX: out of scope for this corpus" — rather
+than as 348 identical cells. `series_summary.csv` drops the column entirely, and so should the
+ranked table and the heatmap.
+
+Two columns can never be `N/A`, because the scanner hard-codes them as always applicable:
+`writing` and `links`. A renderer may rely on that. At the other end, **`admonitions` carries
+only three distinct numeric values in the whole file** — 7.5, 9.5 and 10.0 — so it is an ordinal
+with three levels, and a continuous colour ramp or a bar chart over it asserts a precision the
+data does not have.
 
 ### Violations and review
 
