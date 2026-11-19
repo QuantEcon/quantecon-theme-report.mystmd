@@ -1,7 +1,10 @@
 # Dependabot version updates, modelled on QuantEcon/quantecon-book-theme's
 # config and QuantEcon/actions' grouped form. GitHub Actions pins are checked
-# weekly -- minor and patch updates in one PR, majors in another -- and npm
-# dependencies monthly in one grouped PR.
+# weekly and npm dependencies monthly, each split the same way: minor and
+# patch updates in one grouped PR, majors in another. A major (Remix, React,
+# Tailwind, TypeScript) is a migration, not a routine bump, so keeping majors
+# out of the minor/patch group keeps that PR mergeable. The npm rules follow
+# the lecture theme's (QuantEcon/quantecon-theme.mystmd#255, #276 and #279).
 # https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
@@ -35,3 +38,54 @@ updates:
       npm-dependencies:
         patterns:
           - "*"
+        update-types:
+          - minor
+          - patch
+      npm-dependencies-major:
+        patterns:
+          - "*"
+        update-types:
+          - major
+    ignore:
+      # Hold Remix on 1.17.x. Remix 1.18+ hard-reloads the client in a loop
+      # under the mystmd CLI's SSR (jupyter-book/myst-theme#184), which is why
+      # package.json pins `~1.17.0` (see SECURITY.md). A 1.19 minor would
+      # otherwise arrive in the npm-dependencies group. Drop this once the
+      # theme moves off Remix.
+      - dependency-name: "@remix-run/*"
+        versions:
+          - ">=1.18.0"
+      # Hold katex on 0.16.x. KaTeX 0.18 prefixes its CSS classes (.sizing ->
+      # .katex-sizing, likewise .base, .strut, .tag, .root, ...). The maths
+      # HTML on a page is not rendered by this package: the mystmd CLI renders
+      # it at build time with the KaTeX it bundles, and the theme only serves
+      # katex.min.css (app/links.ts). 0.17.0 is held back too: it keeps the old
+      # class names but brings no fix we need. Lift this once mystmd bundles
+      # KaTeX 0.18 or later.
+      - dependency-name: katex
+        versions:
+          - ">=0.17.0"
+      # Majors that are migrations rather than bumps, so Dependabot cannot
+      # land them. @myst-theme/* and myst-to-react 2.x replace Remix with
+      # React Router 8 and Vite, and move together with React 19. Tailwind 4
+      # moves its CLI to @tailwindcss/cli and its config into CSS, and
+      # TypeScript 7 removes the moduleResolution and baseUrl settings
+      # tsconfig.json uses, so each needs its own change. Minor and patch
+      # updates still arrive in the npm-dependencies group. Drop an entry
+      # once its migration lands.
+      - dependency-name: "@myst-theme/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: myst-to-react
+        update-types: ["version-update:semver-major"]
+      - dependency-name: react
+        update-types: ["version-update:semver-major"]
+      - dependency-name: react-dom
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: tailwindcss
+        update-types: ["version-update:semver-major"]
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
